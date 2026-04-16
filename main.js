@@ -69,3 +69,12 @@ app.on('window-all-closed', (e) => {
 ipcMain.handle('quit-app', () => {
   app.quit()
 })
+
+ipcMain.handle('resize-window', (event, { width, height }) => {
+  win.setSize(Math.round(width), Math.round(height))
+  const bounds = tray.getBounds()
+  win.setPosition(
+    Math.round(bounds.x + bounds.width / 2 - width / 2),
+    Math.round(bounds.y + bounds.height)
+  )
+})
