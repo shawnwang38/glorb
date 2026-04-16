@@ -439,6 +439,40 @@
       updateFocusMessage()
     })
     updateFocusMessage()
+
+    // === Theme Toggle ===
+
+    const btnTheme = document.getElementById('btn-theme')
+    const iconSun = document.getElementById('icon-sun')
+    const iconMoon = document.getElementById('icon-moon')
+    const glorb = document.getElementById('glorb-img')
+
+    let isDark = false
+
+    function applyTheme(dark) {
+      isDark = dark
+      if (dark) {
+        document.body.classList.add('dark')
+        glorb.src = 'glorb_dark.png'
+        iconSun.style.display = 'block'
+        iconMoon.style.display = 'none'
+      } else {
+        document.body.classList.remove('dark')
+        glorb.src = 'glorb_light.png'
+        iconSun.style.display = 'none'
+        iconMoon.style.display = 'block'
+      }
+    }
+
+    btnTheme.addEventListener('click', () => {
+      applyTheme(!isDark)
+      window.glorb.storeSet('theme', isDark ? 'dark' : 'light')
+    })
+
+    // Restore theme on load
+    window.glorb.storeGet('theme', 'light').then(savedTheme => {
+      applyTheme(savedTheme === 'dark')
+    })
   </script>
 </body>
 </html>
