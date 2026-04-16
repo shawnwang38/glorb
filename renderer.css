@@ -303,9 +303,9 @@ html, body {
   flex-shrink: 0;
 }
 
-/* Settings panel — 154px wide, slides in from right */
+/* Settings panel — 314px wide, slides in from right */
 #settings-panel {
-  width: 154px;
+  width: 314px;
   height: 100%;
   background: #f0f0f0;
   flex-shrink: 0;
@@ -432,4 +432,12 @@ html, body {
   cursor: default;
   transition: background 150ms ease;
   line-height: 1.5;
+}
+
+/* Ring slider handle */
+#ring-handle {
+  cursor: grab;
+}
+#ring-handle:active {
+  cursor: grabbing;
 }
