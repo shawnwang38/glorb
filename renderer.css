@@ -333,8 +333,8 @@ html, body {
 }
 
 #focus-message {
-  font-size: 14px;
-  font-weight: 400;
+  font-size: 20px;
+  font-weight: 600;
   color: #1a1a1a;
   line-height: 1.5;
 }
@@ -370,9 +370,43 @@ html, body {
   background: transparent;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 6px;
-  cursor: default;
+  cursor: pointer;
   text-align: left;
   transition: background 150ms ease;
+}
+
+.strength-btn:not(.active):hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+#user-name {
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  transition: border-color 150ms ease;
+}
+
+#user-name:hover {
+  border-bottom-color: #FF6B35;
+}
+
+#name-input {
+  display: none;
+  background: transparent;
+  border: none;
+  border-bottom: 1.5px solid #FF6B35;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+  outline: none;
+  width: 8ch;
+  max-width: 120px;
+  padding: 0;
+  line-height: inherit;
+}
+
+#name-input.editing {
+  display: inline;
 }
 
 .strength-btn.active {
