@@ -132,3 +132,153 @@ html, body {
   background: #1a1a1a;
   color: #ffffff;
 }
+
+/* === Phase 2: Timer + Design === */
+
+/* Timer view container — fills #app, flex column, centered */
+#timer-view {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 16px 32px 16px;
+  position: relative;
+}
+
+/* Ring wrapper — positions SVG and glorb as a stack */
+#timer-ring {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  flex-shrink: 0;
+}
+
+/* SVG ring element */
+#timer-ring svg {
+  display: block;
+}
+
+/* Progress circle — rotated so 12 o'clock is start point */
+#ring-progress {
+  transform: rotate(-90deg);
+  transform-origin: 100px 100px;
+  transition: stroke-dashoffset 1s linear;
+}
+
+/* glorb mascot container — centered over ring */
+#glorb-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+/* glorb image — fills container */
+#glorb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* glorb placeholder — orange circle with "G" (shown when image absent) */
+#glorb-placeholder {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: #FF6B35;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  font-weight: 600;
+  color: #ffffff;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Vignette overlay — radial gradient blending mascot edges into background */
+#glorb-vignette {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, transparent 40%, #f0f0f0 75%);
+  pointer-events: none;
+}
+
+/* Time display — "XXh XXm" format, Display typography */
+#time-display {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: #1a1a1a;
+  text-align: center;
+  margin-top: 24px;
+  padding: 8px 0;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Start / Pause / Resume button — primary action, full-width orange */
+#btn-start {
+  width: 100%;
+  padding: 12px 24px;
+  margin-top: 32px;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #ffffff;
+  background: #FF6B35;
+  border: 1px solid #FF6B35;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 150ms ease, border-color 150ms ease;
+  line-height: 1.5;
+}
+
+#btn-start:hover {
+  background: #e55a26;
+  border-color: #e55a26;
+}
+
+/* Hamburger button — top-right, mirrors × close button placement */
+#btn-hamburger {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 150ms ease;
+  padding: 0;
+}
+
+#btn-hamburger:hover {
+  background: rgba(26, 26, 26, 0.08);
+}
+
+/* Hamburger icon — 3 bars stacked with gap */
+.hamburger-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}
+
+.hamburger-bars span {
+  display: block;
+  width: 14px;
+  height: 2px;
+  background: #1a1a1a;
+  border-radius: 1px;
+}
