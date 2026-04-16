@@ -25,7 +25,7 @@
 ### Settings Panel
 
 - [ ] **SETT-01**: Hamburger (3-line) button in top-right of main view
-- [ ] **SETT-02**: Clicking hamburger expands window to ~440×360px and slides in settings panel from right
+- [x] **SETT-02**: Clicking hamburger expands window to ~440×360px and slides in settings panel from right
 - [ ] **SETT-03**: Settings panel shows "Hi [username], you've focused for Xh Xm with Glorb."
 - [ ] **SETT-04**: Strength selector with three options: Auto / Weak / Strong (UI only, no behavior)
 - [ ] **SETT-05**: "Retake Test" button in settings panel (UI only, no behavior)
@@ -76,7 +76,7 @@
 | TIMER-06 | Phase 2 | Pending |
 | TIMER-07 | Phase 2 | Pending |
 | SETT-01 | Phase 3 | Pending |
-| SETT-02 | Phase 3 | Pending |
+| SETT-02 | Phase 3 | Complete |
 | SETT-03 | Phase 3 | Pending |
 | SETT-04 | Phase 3 | Pending |
 | SETT-05 | Phase 3 | Pending |
