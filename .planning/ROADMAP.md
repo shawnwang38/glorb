@@ -29,8 +29,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Electron main process: package.json, main.js, preload.js (Tray, BrowserWindow, IPC)
-- [ ] 01-02-PLAN.md — Renderer: renderer.html + renderer.css (close button, quit overlay, app container)
+- [x] 01-01-PLAN.md — Electron main process: package.json, main.js, preload.js (Tray, BrowserWindow, IPC)
+- [x] 01-02-PLAN.md — Renderer: renderer.html + renderer.css (close button, quit overlay, app container)
 
 **UI hint**: yes
 
