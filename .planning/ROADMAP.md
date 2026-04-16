@@ -44,7 +44,13 @@ Plans:
   3. Clicking Start begins the countdown; clicking Pause freezes it; the button label reflects current state
   4. When the timer reaches 00:00 it resets to 25:00 automatically
   5. The entire window uses the correct palette (#f0f0f0, black/dark-gray text, #FF6B35 accents) with Inter/system-ui font and consistent button styling
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [x] 02-01-PLAN.md — Timer HTML structure + CSS styles (ring, glorb, time display, buttons, hamburger)
+- [x] 02-02-PLAN.md — Timer JavaScript engine (countdown, pause/resume, auto-reset, ring animation)
+- [ ] 02-03-PLAN.md — Human visual and functional QA checkpoint
+
 **UI hint**: yes
 
 ### Phase 3: Settings Panel
@@ -68,5 +74,5 @@ Phases execute in numeric order: 1 → 2 → 3
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. App Shell | 0/2 | Not started | - |
-| 2. Timer + Design | 0/? | Not started | - |
+| 2. Timer + Design | 0/3 | Not started | - |
 | 3. Settings Panel | 0/? | Not started | - |
