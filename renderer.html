@@ -99,6 +99,76 @@
     })
 
     btnKeep.addEventListener('click', hideOverlay)
+
+    // === Phase 2: Timer Engine ===
+
+    const CIRCUMFERENCE = 2 * Math.PI * 92  // ≈ 578.05px — matches SVG r=92
+    const TOTAL_SECONDS = 25 * 60           // 1500 seconds
+
+    const ringProgress = document.getElementById('ring-progress')
+    const timeDisplay = document.getElementById('time-display')
+    const btnStart = document.getElementById('btn-start')
+
+    let remaining = TOTAL_SECONDS
+    let timerState = 'idle'  // 'idle' | 'running' | 'paused'
+    let intervalId = null
+
+    function formatTime(secs) {
+      const h = Math.floor(secs / 3600)
+      const m = Math.floor((secs % 3600) / 60)
+      return String(h).padStart(2, '0') + 'h ' + String(m).padStart(2, '0') + 'm'
+    }
+
+    function updateRing(secs) {
+      const offset = CIRCUMFERENCE * (1 - secs / TOTAL_SECONDS)
+      ringProgress.style.strokeDashoffset = offset
+    }
+
+    function tick() {
+      remaining -= 1
+      if (remaining <= 0) {
+        remaining = 0
+        updateRing(0)
+        timeDisplay.textContent = '00h 00m'
+        resetTimer()
+        return
+      }
+      updateRing(remaining)
+      timeDisplay.textContent = formatTime(remaining)
+    }
+
+    function resetTimer() {
+      clearInterval(intervalId)
+      intervalId = null
+      timerState = 'idle'
+      remaining = TOTAL_SECONDS
+      // Disable transition for instant reset, then re-enable
+      ringProgress.style.transition = 'none'
+      updateRing(TOTAL_SECONDS)
+      timeDisplay.textContent = formatTime(TOTAL_SECONDS)
+      btnStart.textContent = 'Start'
+      // Re-enable transition after a frame so next run animates smoothly
+      requestAnimationFrame(() => {
+        ringProgress.style.transition = 'stroke-dashoffset 1s linear'
+      })
+    }
+
+    btnStart.addEventListener('click', () => {
+      if (timerState === 'idle' || timerState === 'paused') {
+        // Ensure transition is active before starting
+        ringProgress.style.transition = 'stroke-dashoffset 1s linear'
+        timerState = 'running'
+        btnStart.textContent = 'Pause'
+        intervalId = setInterval(tick, 1000)
+      } else if (timerState === 'running') {
+        // Pause: freeze ring without animation drift
+        clearInterval(intervalId)
+        intervalId = null
+        timerState = 'paused'
+        btnStart.textContent = 'Resume'
+        ringProgress.style.transition = 'none'
+      }
+    })
   </script>
 </body>
 </html>
