@@ -6,8 +6,8 @@ let win = null
 
 function createWindow () {
   win = new BrowserWindow({
-    width: 220,
-    height: 360,
+    width: 286,
+    height: 468,
     show: false,
     frame: false,
     resizable: false,
@@ -41,7 +41,7 @@ function createTray () {
     } else {
       const bounds = tray.getBounds()
       win.setPosition(
-        Math.round(bounds.x + bounds.width / 2 - 110),
+        Math.round(bounds.x + bounds.width / 2 - 143),
         Math.round(bounds.y + bounds.height)
       )
       win.show()
