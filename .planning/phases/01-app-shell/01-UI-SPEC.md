@@ -53,11 +53,13 @@ Source: REQUIREMENTS.md SHELL-04 (220×360px window), CONTEXT.md D-03/D-04
 | Role | Size | Weight | Line Height |
 |------|------|--------|-------------|
 | Body | 14px | 400 | 1.5 |
-| Label | 13px | 500 | 1.4 |
+| Label | 13px | 400 | 1.4 |
 | Heading | 16px | 600 | 1.25 |
 | Display | not used in Phase 1 | — | — |
 
 Font stack for all roles: `Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif`
+
+Weights declared: 400 (Body and Label), 600 (Heading only). Maximum 2 weights enforced.
 
 Source: CLAUDE.md (Inter/SF Pro-style sans serif), REQUIREMENTS.md DSGN-02. Sizes default — no upstream override.
 
@@ -74,7 +76,7 @@ Source: CLAUDE.md (Inter/SF Pro-style sans serif), REQUIREMENTS.md DSGN-02. Size
 
 Accent reserved for: × close button hover state only, and the destructive "Quit Glorb" confirmation button fill. Nothing else in Phase 1 uses accent.
 
-Secondary color note: #1a1a1a (near-black) for text against #f0f0f0 background gives ≥ 12:1 contrast ratio. The "Cancel" button uses #1a1a1a text on #f0f0f0 background with a 1px #1a1a1a border — no accent.
+Secondary color note: #1a1a1a (near-black) for text against #f0f0f0 background gives ≥ 12:1 contrast ratio. The "Keep Running" button uses #1a1a1a text on #f0f0f0 background with a 1px #1a1a1a border — no accent.
 
 Source: REQUIREMENTS.md SHELL-04, DSGN-01. CLAUDE.md (#f0f0f0 background, #FF6B35 accent).
 
@@ -101,13 +103,13 @@ Source: REQUIREMENTS.md SHELL-04, DSGN-01. CLAUDE.md (#f0f0f0 background, #FF6B3
   1. Heading: "Quit Glorb?" — 16px, weight 600, #1a1a1a
   2. Body: "This will close the app, not just hide the window." — 14px, weight 400, #1a1a1a, line-height 1.5, margin-top 8px
   3. Button row: margin-top 24px, two buttons side-by-side with 8px gap
-- "Quit Glorb" button: fills #FF6B35, white text (#ffffff), 14px weight 500, border-radius 8px, padding 8px 16px, flex: 1
-- "Cancel" button: transparent background, 1px solid #1a1a1a border, #1a1a1a text, same size/padding as quit button, flex: 1
+- "Quit Glorb" button: fills #FF6B35, white text (#ffffff), 14px weight 400, border-radius 8px, padding 8px 16px, flex: 1
+- "Keep Running" button: transparent background, 1px solid #1a1a1a border, #1a1a1a text, 14px weight 400, same size/padding as quit button, flex: 1
 - Quit button hover: #e55a26 (darkened orange, 10% darker)
-- Cancel button hover: #1a1a1a background, #ffffff text
+- Keep Running button hover: #1a1a1a background, #ffffff text
 - Both button transitions: `background 150ms ease, color 150ms ease, border-color 150ms ease`
 - "Quit Glorb" action: `app.quit()` via IPC
-- "Cancel" action: hides overlay, returns to normal window view
+- "Keep Running" action: hides overlay, returns to normal window view
 
 ### 3. Main Content Container
 
@@ -134,13 +136,13 @@ Source: CONTEXT.md D-08 (Claude's discretion on tray icon), REQUIREMENTS.md SHEL
 | Primary CTA | "Quit Glorb" |
 | Overlay heading | "Quit Glorb?" |
 | Overlay body | "This will close the app, not just hide the window." |
-| Cancel action label | "Cancel" |
+| Cancel action label | "Keep Running" |
 | Empty state heading | not applicable — Phase 1 has no data state |
 | Empty state body | not applicable |
 | Error state | not applicable — Phase 1 has no async operations |
 | Destructive confirmation | Quit: "This will close the app, not just hide the window." — confirmed by clicking "Quit Glorb" |
 
-Rationale: The overlay body copy explicitly distinguishes quit from hide because CONTEXT.md D-04 calls this out as the critical UX distinction. "Glorb" is included in the button label ("Quit Glorb" not just "Quit") to reinforce the app-level action.
+Rationale: The overlay body copy explicitly distinguishes quit from hide because CONTEXT.md D-04 calls this out as the critical UX distinction. "Glorb" is included in the button label ("Quit Glorb" not just "Quit") to reinforce the app-level action. "Keep Running" is used instead of "Cancel" to communicate the result (app continues) rather than the gesture (dismissing a dialog).
 
 Source: CONTEXT.md D-04, D-05 (quit confirmation is the only destructive action in Phase 1)
 
@@ -155,7 +157,7 @@ Source: CONTEXT.md D-04, D-05 (quit confirmation is the only destructive action 
 | Click anywhere outside window (blur) | Hide window | D-01 |
 | Click × button | Show quit confirmation overlay | D-03, D-04 |
 | Click "Quit Glorb" in overlay | Quit app (`app.quit()`) | D-04 |
-| Click "Cancel" in overlay | Hide overlay, resume normal view | D-04 |
+| Click "Keep Running" in overlay | Hide overlay, resume normal view | D-04 |
 | Cmd+Q | Quit app directly, no confirmation | D-05 |
 | Window appears | No animation for Phase 1 — instant show | CONTEXT.md discretion |
 
