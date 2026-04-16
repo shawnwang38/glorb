@@ -90,7 +90,7 @@
     <div id="settings-panel" aria-label="Settings">
       <!-- Focus summary -->
       <div id="focus-summary">
-        <p id="focus-message">Hi there, you've focused for 0h 0m with Glorb.</p>
+        <p id="focus-message">Hi <span class="orange">Owen</span>,<br>you've focused for <span class="orange" id="focus-time">0h 0m</span> with Glorb.</p>
       </div>
 
       <!-- Strength selector -->
@@ -329,6 +329,13 @@
     // Initialise handle position and visibility on page load
     updateHandlePosition(startMinutes)
     syncHandleVisibility()
+
+    // Reset to timer view whenever the window is hidden (tray icon click to hide)
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden' && settingsOpen) {
+        closeSettings()
+      }
+    })
   </script>
 </body>
 </html>

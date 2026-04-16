@@ -322,21 +322,26 @@ html, body {
   transform: translateX(0);
 }
 
+/* Orange utility — variable/dynamic values */
+.orange {
+  color: #FF6B35;
+}
+
 /* Focus summary */
 #focus-summary {
   margin-bottom: 20px;
 }
 
 #focus-message {
-  font-size: 12px;
-  font-weight: 400;
+  font-size: 28px;
+  font-weight: 600;
   color: #1a1a1a;
-  line-height: 1.5;
+  line-height: 1.3;
 }
 
 /* Settings section label */
 .settings-label {
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 500;
   color: rgba(0, 0, 0, 0.5);
   text-transform: uppercase;
@@ -359,7 +364,7 @@ html, body {
   width: 100%;
   padding: 6px 8px;
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
   color: #1a1a1a;
   background: transparent;
