@@ -26,7 +26,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   1. App launches with no Dock icon — only a Tray icon appears in the macOS menu bar
   2. Clicking the Tray icon shows the main window; clicking again hides it
   3. Window is frameless, positioned near the menu bar icon, and has a #f0f0f0 background at ~220x360px
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 01-01-PLAN.md — Electron main process: package.json, main.js, preload.js (Tray, BrowserWindow, IPC)
+- [ ] 01-02-PLAN.md — Renderer: renderer.html + renderer.css (close button, quit overlay, app container)
+
 **UI hint**: yes
 
 ### Phase 2: Timer + Design
@@ -62,6 +67,6 @@ Phases execute in numeric order: 1 → 2 → 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. App Shell | 0/? | Not started | - |
+| 1. App Shell | 0/2 | Not started | - |
 | 2. Timer + Design | 0/? | Not started | - |
 | 3. Settings Panel | 0/? | Not started | - |
