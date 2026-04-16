@@ -200,6 +200,38 @@
         ringProgress.style.transition = 'none'
       }
     })
+
+    // === Phase 3: Settings Panel Toggle ===
+
+    const btnHamburger = document.getElementById('btn-hamburger')
+    const btnSettingsClose = document.getElementById('btn-settings-close')
+    const appEl = document.getElementById('app')
+
+    let settingsOpen = false
+
+    function openSettings() {
+      settingsOpen = true
+      appEl.classList.add('settings-open')
+      btnHamburger.setAttribute('aria-label', 'Close settings')
+      window.glorb.resize(440, 468)
+    }
+
+    function closeSettings() {
+      settingsOpen = false
+      appEl.classList.remove('settings-open')
+      btnHamburger.setAttribute('aria-label', 'Open settings')
+      window.glorb.resize(286, 468)
+    }
+
+    btnHamburger.addEventListener('click', () => {
+      if (settingsOpen) {
+        closeSettings()
+      } else {
+        openSettings()
+      }
+    })
+
+    btnSettingsClose.addEventListener('click', closeSettings)
   </script>
 </body>
 </html>
