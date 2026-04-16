@@ -8,8 +8,8 @@
 }
 
 html, body {
-  width: 286px;
-  height: 468px;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   background: #f0f0f0;
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
@@ -303,9 +303,9 @@ html, body {
   flex-shrink: 0;
 }
 
-/* Settings panel — 314px wide, slides in from right */
+/* Settings panel — 434px wide, slides in from right */
 #settings-panel {
-  width: 314px;
+  width: 434px;
   height: 100%;
   background: #f0f0f0;
   flex-shrink: 0;
