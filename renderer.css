@@ -433,3 +433,141 @@ html, body {
 #ring-handle:active {
   cursor: grabbing;
 }
+
+/* === Theme Toggle Button === */
+#btn-theme {
+  position: absolute;
+  top: 8px;
+  right: 44px; /* 8px gap + 28px hamburger + 8px gap = 44px from right */
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 150ms ease;
+  padding: 0;
+  color: #1a1a1a;
+}
+#btn-theme:hover {
+  background: rgba(0, 0, 0, 0.07);
+}
+#btn-theme svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* === Dark Theme Overrides === */
+body.dark,
+body.dark #app,
+body.dark #settings-panel,
+body.dark #quit-overlay {
+  background: #171719;
+  color: #f0f0f0;
+}
+
+body.dark #btn-close,
+body.dark #btn-theme,
+body.dark .hamburger-bars span {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+body.dark #btn-close:hover,
+body.dark #btn-theme:hover,
+body.dark #btn-hamburger:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f0f0f0;
+}
+
+body.dark .hamburger-bars span {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+body.dark #time-display,
+body.dark .time-nums,
+body.dark #focus-message,
+body.dark .settings-label {
+  color: #f0f0f0;
+}
+
+body.dark .settings-label {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+body.dark #ring-progress {
+  stroke: #f0f0f0;
+}
+
+body.dark circle[stroke="rgba(0, 0, 0, 0.15)"] {
+  stroke: rgba(255, 255, 255, 0.15);
+}
+
+body.dark #ring-handle {
+  stroke: #171719;
+}
+
+body.dark #glorb-vignette {
+  background: radial-gradient(circle, transparent 40%, #171719 75%);
+}
+
+body.dark #btn-start {
+  background: #f0f0f0;
+  color: #171719;
+  border-color: #f0f0f0;
+}
+
+body.dark #btn-start:hover {
+  background: #d4d4d4;
+  border-color: #d4d4d4;
+}
+
+body.dark #btn-quit {
+  background: #f0f0f0;
+  color: #171719;
+  border-color: #f0f0f0;
+}
+
+body.dark #btn-quit:hover {
+  background: #d4d4d4;
+  border-color: #d4d4d4;
+}
+
+body.dark #btn-keep {
+  color: #f0f0f0;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+body.dark #btn-keep:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+body.dark .strength-btn {
+  color: #f0f0f0;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+body.dark .strength-btn:not(.active):hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+body.dark .strength-btn.active {
+  background: #f0f0f0;
+  color: #171719;
+  border-color: #f0f0f0;
+}
+
+body.dark #user-name:hover {
+  border-bottom-color: #FF6B35;
+}
+
+body.dark #name-input {
+  color: #f0f0f0;
+}
+
+body.dark #glorb-placeholder {
+  background: #333336;
+}
