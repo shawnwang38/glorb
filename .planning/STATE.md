@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-04-16)
 Phase: 03 (settings-panel) — EXECUTING
 Plan: 4 of 4
 Status: Ready to execute
-Last activity: 2026-04-16 - Completed quick task 260416-mjb: Settings buttons clickable, strength radio group, name inline edit, focus time persistence
+Last activity: 2026-04-16 - Completed quick task 260416-msy: Dark/light theme toggle with sun/moon icon, glorb_light/dark.png, persisted via electron-store
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -87,6 +87,7 @@ None yet.
 |---|-------------|------|--------|-----------|
 | 260416-lhb | Fix window width + XXm XXs countdown + ring arc slider (1–60 min) | 2026-04-16 | c041c4f | [260416-lhb-fix-window-width-needs-to-expand-much-mo](.planning/quick/260416-lhb-fix-window-width-needs-to-expand-much-mo/) |
 | 260416-mjb | Settings buttons clickable: strength radio group, name inline edit, focus time persistence | 2026-04-16 | 7a92f6b | [260416-mjb-make-the-settings-buttons-clickable-the-](.planning/quick/260416-mjb-make-the-settings-buttons-clickable-the-/) |
+| 260416-msy | Dark/light theme toggle: sun/moon icon, glorb_light/dark.png, #171719 dark bg, electron-store persistence | 2026-04-16 | 79d2502 | [260416-msy-add-dark-light-theme-toggle-sun-moon-ico](.planning/quick/260416-msy-add-dark-light-theme-toggle-sun-moon-ico/) |
 
 ## Session Continuity
 
