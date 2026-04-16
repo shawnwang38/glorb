@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-04-16)
 Phase: 03 (settings-panel) — EXECUTING
 Plan: 4 of 4
 Status: Ready to execute
-Last activity: 2026-04-16
+Last activity: 2026-04-16 - Completed quick task 260416-mjb: Settings buttons clickable, strength radio group, name inline edit, focus time persistence
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -86,6 +86,7 @@ None yet.
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 260416-lhb | Fix window width + XXm XXs countdown + ring arc slider (1–60 min) | 2026-04-16 | c041c4f | [260416-lhb-fix-window-width-needs-to-expand-much-mo](.planning/quick/260416-lhb-fix-window-width-needs-to-expand-much-mo/) |
+| 260416-mjb | Settings buttons clickable: strength radio group, name inline edit, focus time persistence | 2026-04-16 | 7a92f6b | [260416-mjb-make-the-settings-buttons-clickable-the-](.planning/quick/260416-mjb-make-the-settings-buttons-clickable-the-/) |
 
 ## Session Continuity
 
