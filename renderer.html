@@ -22,8 +22,8 @@
       </div>
     </div>
 
-    <!-- Hamburger button (Phase 3 placeholder — not wired) -->
-    <button id="btn-hamburger" aria-label="Open settings" aria-disabled="true">
+    <!-- Hamburger button (Phase 3) -->
+    <button id="btn-hamburger" aria-label="Open settings">
       <div class="hamburger-bars">
         <span></span>
         <span></span>
@@ -40,7 +40,7 @@
           <circle
             cx="100" cy="100" r="92"
             fill="none"
-            stroke="rgba(26, 26, 26, 0.1)"
+            stroke="rgba(0, 0, 0, 0.15)"
             stroke-width="8"
           />
           <!-- Progress circle (animated countdown) -->
@@ -48,7 +48,7 @@
             id="ring-progress"
             cx="100" cy="100" r="92"
             fill="none"
-            stroke="#FF6B35"
+            stroke="#1a1a1a"
             stroke-width="8"
             stroke-linecap="round"
             stroke-dasharray="578.05"
@@ -60,7 +60,7 @@
         <div id="glorb-container">
           <img
             id="glorb-img"
-            src="assets/glorb.png"
+            src="glorb.png"
             alt="Glorb mascot"
             onerror="this.style.display='none'; document.getElementById('glorb-placeholder').style.display='flex';"
           >
@@ -70,10 +70,39 @@
       </div>
 
       <!-- Time display -->
-      <div id="time-display">00h 25m</div>
+      <div id="time-display"><span class="time-nums">00</span>h <span class="time-nums">25</span>m</div>
 
       <!-- Start / Pause / Resume button -->
       <button id="btn-start">Start</button>
+    </div>
+
+    <!-- Settings panel (Phase 3 — slides in from right) -->
+    <div id="settings-panel" aria-label="Settings">
+      <!-- Panel header -->
+      <div id="settings-header">
+        <span id="settings-title">Settings</span>
+        <button id="btn-settings-close" aria-label="Close settings">&times;</button>
+      </div>
+
+      <!-- Focus summary -->
+      <div id="focus-summary">
+        <p id="focus-message">Hi there, you've focused for 0h 0m with Glorb.</p>
+      </div>
+
+      <!-- Strength selector -->
+      <div id="strength-selector">
+        <p class="settings-label">Focus Strength</p>
+        <div id="strength-buttons" role="group" aria-label="Focus strength">
+          <button class="strength-btn active" data-strength="auto">Auto</button>
+          <button class="strength-btn" data-strength="weak">Weak</button>
+          <button class="strength-btn" data-strength="strong">Strong</button>
+        </div>
+      </div>
+
+      <!-- Retake Test -->
+      <div id="retake-section">
+        <button id="btn-retake">Retake Test</button>
+      </div>
     </div>
   </div>
 
@@ -116,7 +145,9 @@
     function formatTime(secs) {
       const h = Math.floor(secs / 3600)
       const m = Math.floor((secs % 3600) / 60)
-      return String(h).padStart(2, '0') + 'h ' + String(m).padStart(2, '0') + 'm'
+      const hStr = String(h).padStart(2, '0')
+      const mStr = String(m).padStart(2, '0')
+      return `<span class="time-nums">${hStr}</span>h <span class="time-nums">${mStr}</span>m`
     }
 
     function updateRing(secs) {
@@ -129,12 +160,12 @@
       if (remaining <= 0) {
         remaining = 0
         updateRing(0)
-        timeDisplay.textContent = '00h 00m'
+        timeDisplay.innerHTML = formatTime(0)
         resetTimer()
         return
       }
       updateRing(remaining)
-      timeDisplay.textContent = formatTime(remaining)
+      timeDisplay.innerHTML = formatTime(remaining)
     }
 
     function resetTimer() {
@@ -145,7 +176,7 @@
       // Disable transition for instant reset, then re-enable
       ringProgress.style.transition = 'none'
       updateRing(TOTAL_SECONDS)
-      timeDisplay.textContent = formatTime(TOTAL_SECONDS)
+      timeDisplay.innerHTML = formatTime(TOTAL_SECONDS)
       btnStart.textContent = 'Start'
       // Re-enable transition after a frame so next run animates smoothly
       requestAnimationFrame(() => {
