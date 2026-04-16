@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'">
+  <meta name="viewport" content="width=220, initial-scale=1.0">
+  <title>Glorb</title>
+  <link rel="stylesheet" href="renderer.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Close button (× — D-03, D-04) -->
+    <button id="btn-close" title="Quit Glorb">&times;</button>
+
+    <!-- Quit confirmation overlay (D-04) -->
+    <div id="quit-overlay" role="dialog" aria-modal="true" aria-labelledby="overlay-heading">
+      <h2 id="overlay-heading">Quit Glorb?</h2>
+      <p>This will close the app, not just hide the window.</p>
+      <div class="overlay-buttons">
+        <button id="btn-quit">Quit Glorb</button>
+        <button id="btn-keep">Keep Running</button>
+      </div>
+    </div>
+
+    <!-- Phase 2 timer UI will be injected here -->
+  </div>
+
+  <script>
+    const btnClose = document.getElementById('btn-close')
+    const btnQuit = document.getElementById('btn-quit')
+    const btnKeep = document.getElementById('btn-keep')
+    const overlay = document.getElementById('quit-overlay')
+
+    function showOverlay() {
+      overlay.classList.add('visible')
+      btnQuit.focus()
+    }
+
+    function hideOverlay() {
+      overlay.classList.remove('visible')
+    }
+
+    btnClose.addEventListener('click', showOverlay)
+
+    btnQuit.addEventListener('click', () => {
+      window.glorb.quit()
+    })
+
+    btnKeep.addEventListener('click', hideOverlay)
+  </script>
+</body>
+</html>
