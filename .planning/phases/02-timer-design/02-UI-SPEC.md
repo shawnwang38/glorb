@@ -26,6 +26,8 @@ created: 2026-04-16
 
 No shadcn or component registry applies. All UI is hand-authored in renderer.html + renderer.css per established Phase 1 pattern.
 
+Primary focal point: SVG ring + glorb mascot at center of window
+
 Source: CLAUDE.md (Electron + vanilla HTML/CSS/JS, no build framework), REQUIREMENTS.md DSGN-02, 01-UI-SPEC.md
 
 ---
@@ -69,6 +71,8 @@ Font stack for all roles: `Inter, system-ui, -apple-system, BlinkMacSystemFont, 
 Weights declared: 400 (Body, Label) and 600 (Heading, Display). Maximum 2 weights enforced.
 
 Time readout uses Display role (28px, weight 600) — the "XXh XXm" countdown is the primary information element in the window. All other roles carry over from Phase 1.
+
+Note: The 13px/14px distinction between Label and Body is intentional for the minimalist scale — Label is reserved for secondary/supporting text where a slightly tighter size reinforces hierarchy without introducing a third weight.
 
 Source: 01-UI-SPEC.md (Body 14/400/1.5, Label 13/400/1.4, Heading 16/600/1.25). Display size is Claude's discretion per CONTEXT.md — 28px provides clear legibility at 286px window width without overwhelming the ring.
 
@@ -189,8 +193,9 @@ Source: 02-CONTEXT.md (filled #FF6B35, full-width 24px padding, idle = full oran
 
 Hamburger bars (3 CSS spans stacked):
 - Each bar: `width: 14px; height: 2px; background: #1a1a1a; border-radius: 1px; display: block`
-- Vertical gap between bars: 3px
-- All 3 bars wrapped in a `<div>` flex column with `gap: 3px`, centered inside button
+- Vertical gap between bars: 4px
+- All 3 bars wrapped in a `<div>` flex column with `gap: 4px`, centered inside button
+- Total icon height: 3 bars × 2px + 2 gaps × 4px = 14px
 
 - Action (Phase 2): no-op — button is placed but not wired until Phase 3
 - aria-label: "Open settings"
