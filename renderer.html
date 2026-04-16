@@ -22,6 +22,28 @@
       </div>
     </div>
 
+    <!-- Theme toggle button (sun/moon) -->
+    <button id="btn-theme" aria-label="Toggle dark/light theme">
+      <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Sun icon — visible in dark mode (click to go light) -->
+        <g id="icon-sun" style="display:none;">
+          <circle cx="8" cy="8" r="3.5" fill="currentColor"/>
+          <line x1="8" y1="1" x2="8" y2="2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="8" y1="13.5" x2="8" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="1" y1="8" x2="2.5" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="13.5" y1="8" x2="15" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="2.93" y1="2.93" x2="4" y2="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="12" y1="12" x2="13.07" y2="13.07" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="13.07" y1="2.93" x2="12" y2="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="4" y1="12" x2="2.93" y2="13.07" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </g>
+        <!-- Moon icon — visible in light mode (click to go dark) -->
+        <g id="icon-moon" style="display:block;">
+          <path d="M11 4a6 6 0 1 0 0 8 4.5 4.5 0 1 1 0-8z" fill="currentColor"/>
+        </g>
+      </svg>
+    </button>
+
     <!-- Hamburger button (Phase 3) -->
     <button id="btn-hamburger" aria-label="Open settings">
       <div class="hamburger-bars">
@@ -70,7 +92,7 @@
         <div id="glorb-container">
           <img
             id="glorb-img"
-            src="glorb.png"
+            src="glorb_light.png"
             alt="Glorb mascot"
             onerror="this.style.display='none'; document.getElementById('glorb-placeholder').style.display='flex';"
           >
