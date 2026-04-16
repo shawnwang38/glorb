@@ -8,5 +8,8 @@
   },
   "devDependencies": {
     "electron": "^29.0.0"
+  },
+  "dependencies": {
+    "electron-store": "^8.2.0"
   }
 }

@@ -1,5 +1,7 @@
 const { app, BrowserWindow, Tray, nativeImage, ipcMain, globalShortcut } = require('electron')
 const path = require('path')
+const Store = require('electron-store')
+const store = new Store()
 
 let tray = null
 let win = null
@@ -78,3 +80,6 @@ ipcMain.handle('resize-window', (event, { width, height }) => {
     Math.round(bounds.y + bounds.height)
   )
 })
+
+ipcMain.handle('store-get', (event, key, defaultVal) => store.get(key, defaultVal))
+ipcMain.handle('store-set', (event, key, value) => { store.set(key, value) })
