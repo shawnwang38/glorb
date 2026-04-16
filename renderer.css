@@ -1,0 +1,134 @@
+/* Glorb renderer styles — Phase 1 App Shell */
+
+/* === Reset and base === */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 220px;
+  height: 360px;
+  overflow: hidden;
+  background: #f0f0f0;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #1a1a1a;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-app-region: no-drag;
+}
+
+/* === App container === */
+#app {
+  width: 100%;
+  height: 100%;
+  background: #f0f0f0;
+  position: relative;
+}
+
+/* === Close button (× — UI-SPEC Component 1) === */
+#btn-close {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  color: rgba(26, 26, 26, 0.7);
+  z-index: 10;
+  transition: background 150ms ease, color 150ms ease;
+  line-height: 1;
+  padding: 0;
+}
+
+#btn-close:hover {
+  background: #FF6B35;
+  color: #ffffff;
+}
+
+/* === Quit overlay (UI-SPEC Component 2) === */
+#quit-overlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: #f0f0f0;
+  z-index: 100;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+#quit-overlay.visible {
+  display: flex;
+}
+
+#quit-overlay h2 {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: #1a1a1a;
+  text-align: center;
+}
+
+#quit-overlay p {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #1a1a1a;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.overlay-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 24px;
+  width: 100%;
+}
+
+.overlay-buttons button {
+  flex: 1;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  border-radius: 8px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
+  line-height: 1.5;
+}
+
+#btn-quit {
+  background: #FF6B35;
+  color: #ffffff;
+  border: 1px solid #FF6B35;
+}
+
+#btn-quit:hover {
+  background: #e55a26;
+  border-color: #e55a26;
+}
+
+#btn-keep {
+  background: transparent;
+  color: #1a1a1a;
+  border: 1px solid #1a1a1a;
+}
+
+#btn-keep:hover {
+  background: #1a1a1a;
+  color: #ffffff;
+}
