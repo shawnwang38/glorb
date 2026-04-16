@@ -46,7 +46,7 @@ html, body {
   border-radius: 6px;
   cursor: pointer;
   font-size: 16px;
-  color: rgba(26, 26, 26, 0.7);
+  color: rgba(0, 0, 0, 0.45);
   z-index: 10;
   transition: background 150ms ease, color 150ms ease;
   line-height: 1;
@@ -54,8 +54,8 @@ html, body {
 }
 
 #btn-close:hover {
-  background: #FF6B35;
-  color: #ffffff;
+  background: rgba(0, 0, 0, 0.07);
+  color: #1a1a1a;
 }
 
 /* === Quit overlay (UI-SPEC Component 2) === */
@@ -112,25 +112,25 @@ html, body {
 }
 
 #btn-quit {
-  background: #FF6B35;
-  color: #ffffff;
-  border: 1px solid #FF6B35;
+  background: #1a1a1a;
+  color: #f0f0f0;
+  border: 1px solid #1a1a1a;
 }
 
 #btn-quit:hover {
-  background: #e55a26;
-  border-color: #e55a26;
+  background: #333333;
+  border-color: #333333;
 }
 
 #btn-keep {
   background: transparent;
   color: #1a1a1a;
-  border: 1px solid #1a1a1a;
+  border: 1px solid rgba(0, 0, 0, 0.25);
 }
 
 #btn-keep:hover {
-  background: #1a1a1a;
-  color: #ffffff;
+  background: rgba(0, 0, 0, 0.07);
+  color: #1a1a1a;
 }
 
 /* === Phase 2: Timer + Design === */
@@ -186,12 +186,12 @@ html, body {
   display: block;
 }
 
-/* glorb placeholder — orange circle with "G" (shown when image absent) */
+/* glorb placeholder — light circle with "G" (shown when image absent) */
 #glorb-placeholder {
   width: 130px;
   height: 130px;
   border-radius: 50%;
-  background: #FF6B35;
+  background: #d4d4d4;
   align-items: center;
   justify-content: center;
   font-size: 36px;
@@ -221,17 +221,22 @@ html, body {
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* Start / Pause / Resume button — primary action, full-width orange */
+/* Numeric time digits — same as body text, no orange highlight */
+.time-nums {
+  color: #1a1a1a;
+}
+
+/* Start / Pause / Resume button — primary action, 160px centered */
 #btn-start {
-  width: 100%;
+  width: 160px;
   padding: 12px 24px;
   margin-top: 32px;
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 14px;
   font-weight: 400;
-  color: #ffffff;
-  background: #FF6B35;
-  border: 1px solid #FF6B35;
+  color: #f0f0f0;
+  background: #1a1a1a;
+  border: 1px solid #1a1a1a;
   border-radius: 8px;
   cursor: pointer;
   transition: background 150ms ease, border-color 150ms ease;
@@ -239,8 +244,8 @@ html, body {
 }
 
 #btn-start:hover {
-  background: #e55a26;
-  border-color: #e55a26;
+  background: #333333;
+  border-color: #333333;
 }
 
 /* Hamburger button — top-right, mirrors × close button placement */
@@ -263,7 +268,7 @@ html, body {
 }
 
 #btn-hamburger:hover {
-  background: rgba(26, 26, 26, 0.08);
+  background: rgba(0, 0, 0, 0.07);
 }
 
 /* Hamburger icon — 3 bars stacked with gap */
@@ -281,4 +286,150 @@ html, body {
   height: 2px;
   background: #1a1a1a;
   border-radius: 1px;
+}
+
+/* === Phase 3: Settings Panel === */
+
+/* App container — flex row to hold timer-view + settings-panel side by side */
+#app {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+/* Timer view — fixed width so settings panel can sit alongside it */
+#timer-view {
+  width: 286px;
+  flex-shrink: 0;
+}
+
+/* Settings panel — 154px wide, slides in from right */
+#settings-panel {
+  width: 154px;
+  height: 100%;
+  background: #f0f0f0;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 48px 12px 24px 12px;
+  transform: translateX(100%);
+  transition: transform 250ms ease;
+  overflow: hidden;
+}
+
+/* Panel open state — slides panel into view when #app has .settings-open */
+#app.settings-open #settings-panel {
+  transform: translateX(0);
+}
+
+/* Settings header — title + close button row */
+#settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+#settings-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+#btn-settings-close {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.45);
+  transition: background 150ms ease, color 150ms ease;
+  padding: 0;
+  line-height: 1;
+}
+
+#btn-settings-close:hover {
+  background: rgba(0, 0, 0, 0.07);
+  color: #1a1a1a;
+}
+
+/* Focus summary */
+#focus-summary {
+  margin-bottom: 20px;
+}
+
+#focus-message {
+  font-size: 12px;
+  font-weight: 400;
+  color: #1a1a1a;
+  line-height: 1.5;
+}
+
+/* Settings section label */
+.settings-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+
+/* Strength selector */
+#strength-selector {
+  margin-bottom: 20px;
+}
+
+#strength-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.strength-btn {
+  width: 100%;
+  padding: 6px 8px;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: #1a1a1a;
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  cursor: default;
+  text-align: left;
+  transition: background 150ms ease;
+}
+
+.strength-btn.active {
+  background: #1a1a1a;
+  color: #f0f0f0;
+  border-color: #1a1a1a;
+}
+
+/* Retake Test button */
+#retake-section {
+  margin-top: auto;
+}
+
+#btn-retake {
+  width: 100%;
+  padding: 8px 12px;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: #f0f0f0;
+  background: #1a1a1a;
+  border: 1px solid #1a1a1a;
+  border-radius: 8px;
+  cursor: default;
+  transition: background 150ms ease;
+  line-height: 1.5;
 }
