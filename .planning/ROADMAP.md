@@ -68,7 +68,7 @@ Plans:
 Plans:
 - [x] 03-01-PLAN.md — IPC bridge: extend preload.js + main.js with resize-window channel
 - [x] 03-02-PLAN.md — HTML + CSS: settings panel DOM, slide animation, strength selector, Retake Test button
-- [ ] 03-03-PLAN.md — JS wiring: hamburger + close button toggle handlers calling IPC resize
+- [x] 03-03-PLAN.md — JS wiring: hamburger + close button toggle handlers calling IPC resize
 - [ ] 03-04-PLAN.md — Human visual and functional QA checkpoint
 
 **UI hint**: yes
@@ -82,4 +82,4 @@ Phases execute in numeric order: 1 → 2 → 3
 |-------|----------------|--------|-----------|
 | 1. App Shell | 0/2 | Not started | - |
 | 2. Timer + Design | 0/3 | Not started | - |
-| 3. Settings Panel | 2/4 | In Progress|  |
+| 3. Settings Panel | 3/4 | In Progress|  |

@@ -29,7 +29,7 @@
 - [x] **SETT-03**: Settings panel shows "Hi [username], you've focused for Xh Xm with Glorb."
 - [x] **SETT-04**: Strength selector with three options: Auto / Weak / Strong (UI only, no behavior)
 - [x] **SETT-05**: "Retake Test" button in settings panel (UI only, no behavior)
-- [ ] **SETT-06**: Close button or same hamburger click collapses settings and shrinks window back
+- [x] **SETT-06**: Close button or same hamburger click collapses settings and shrinks window back
 
 ### Design System
 
@@ -80,7 +80,7 @@
 | SETT-03 | Phase 3 | Complete |
 | SETT-04 | Phase 3 | Complete |
 | SETT-05 | Phase 3 | Complete |
-| SETT-06 | Phase 3 | Pending |
+| SETT-06 | Phase 3 | Complete |
 | DSGN-01 | Phase 2 | Pending |
 | DSGN-02 | Phase 2 | Pending |
 | DSGN-03 | Phase 2 | Pending |
