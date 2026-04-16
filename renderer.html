@@ -88,12 +88,6 @@
 
     <!-- Settings panel (Phase 3 — slides in from right) -->
     <div id="settings-panel" aria-label="Settings">
-      <!-- Panel header -->
-      <div id="settings-header">
-        <span id="settings-title">Settings</span>
-        <button id="btn-settings-close" aria-label="Close settings">&times;</button>
-      </div>
-
       <!-- Focus summary -->
       <div id="focus-summary">
         <p id="focus-message">Hi there, you've focused for 0h 0m with Glorb.</p>
@@ -109,9 +103,12 @@
         </div>
       </div>
 
-      <!-- Retake Test -->
-      <div id="retake-section">
-        <button id="btn-retake">Retake Test</button>
+      <!-- Profile section -->
+      <div id="profile-section">
+        <p class="settings-label">Profile</p>
+        <div id="profile-buttons">
+          <button class="strength-btn" id="btn-retake">Retake Test</button>
+        </div>
       </div>
     </div>
   </div>
@@ -204,28 +201,20 @@
     }
 
     btnStart.addEventListener('click', () => {
-      if (timerState === 'idle' || timerState === 'paused') {
-        // Ensure transition is active before starting
+      if (timerState === 'idle') {
         ringProgress.style.transition = 'stroke-dashoffset 1s linear'
         timerState = 'running'
-        btnStart.textContent = 'Pause'
+        btnStart.textContent = 'End'
         intervalId = setInterval(tick, 1000)
         syncHandleVisibility()
       } else if (timerState === 'running') {
-        // Pause: freeze ring without animation drift
-        clearInterval(intervalId)
-        intervalId = null
-        timerState = 'paused'
-        btnStart.textContent = 'Resume'
-        ringProgress.style.transition = 'none'
-        syncHandleVisibility()
+        resetTimer()
       }
     })
 
     // === Phase 3: Settings Panel Toggle ===
 
     const btnHamburger = document.getElementById('btn-hamburger')
-    const btnSettingsClose = document.getElementById('btn-settings-close')
     const appEl = document.getElementById('app')
 
     let settingsOpen = false
@@ -251,8 +240,6 @@
         openSettings()
       }
     })
-
-    btnSettingsClose.addEventListener('click', closeSettings)
 
     // === Duration ring slider ===
 
