@@ -81,6 +81,12 @@ None yet.
 
 - glorb.png not yet provided — reserved in assets/ slot; needed for Phase 2
 
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260416-lhb | Fix window width + XXm XXs countdown + ring arc slider (1–60 min) | 2026-04-16 | c041c4f | [260416-lhb-fix-window-width-needs-to-expand-much-mo](.planning/quick/260416-lhb-fix-window-width-needs-to-expand-much-mo/) |
+
 ## Session Continuity
 
 Last session: 2026-04-16T22:18:02.155Z
