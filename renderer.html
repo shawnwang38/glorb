@@ -22,7 +22,59 @@
       </div>
     </div>
 
-    <!-- Phase 2 timer UI will be injected here -->
+    <!-- Hamburger button (Phase 3 placeholder — not wired) -->
+    <button id="btn-hamburger" aria-label="Open settings" aria-disabled="true">
+      <div class="hamburger-bars">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </button>
+
+    <!-- Timer view -->
+    <div id="timer-view">
+      <!-- SVG ring + glorb mascot stacked -->
+      <div id="timer-ring">
+        <svg width="200" height="200" viewBox="0 0 200 200">
+          <!-- Track circle (ghost ring) -->
+          <circle
+            cx="100" cy="100" r="92"
+            fill="none"
+            stroke="rgba(26, 26, 26, 0.1)"
+            stroke-width="8"
+          />
+          <!-- Progress circle (animated countdown) -->
+          <circle
+            id="ring-progress"
+            cx="100" cy="100" r="92"
+            fill="none"
+            stroke="#FF6B35"
+            stroke-width="8"
+            stroke-linecap="round"
+            stroke-dasharray="578.05"
+            stroke-dashoffset="0"
+          />
+        </svg>
+
+        <!-- glorb mascot centered over ring -->
+        <div id="glorb-container">
+          <img
+            id="glorb-img"
+            src="assets/glorb.png"
+            alt="Glorb mascot"
+            onerror="this.style.display='none'; document.getElementById('glorb-placeholder').style.display='flex';"
+          >
+          <div id="glorb-placeholder" style="display:none;">G</div>
+          <div id="glorb-vignette"></div>
+        </div>
+      </div>
+
+      <!-- Time display -->
+      <div id="time-display">00h 25m</div>
+
+      <!-- Start / Pause / Resume button -->
+      <button id="btn-start">Start</button>
+    </div>
   </div>
 
   <script>
