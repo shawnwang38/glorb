@@ -59,11 +59,18 @@ Plans:
 **Requirements**: SETT-01, SETT-02, SETT-03, SETT-04, SETT-05, SETT-06
 **Success Criteria** (what must be TRUE):
   1. A hamburger button is visible in the top-right corner of the timer view
-  2. Clicking the hamburger expands the window to ~440x360px and slides in the settings panel from the right
-  3. Settings panel shows a focus summary message ("Hi [username], you've focused for Xh Xm with Glorb.")
+  2. Clicking the hamburger expands the window to 440×468px and slides in the settings panel from the right
+  3. Settings panel shows a focus summary message ("Hi there, you've focused for 0h 0m with Glorb.")
   4. Strength selector (Auto/Weak/Strong) and "Retake Test" button are present in the panel (UI only)
-  5. Clicking the hamburger again (or a close control) collapses the panel and restores the window to ~220x360px
-**Plans**: TBD
+  5. Clicking the hamburger again (or the × in panel header) collapses the panel and restores the window to 286×468px
+**Plans**: 4 plans
+
+Plans:
+- [ ] 03-01-PLAN.md — IPC bridge: extend preload.js + main.js with resize-window channel
+- [ ] 03-02-PLAN.md — HTML + CSS: settings panel DOM, slide animation, strength selector, Retake Test button
+- [ ] 03-03-PLAN.md — JS wiring: hamburger + close button toggle handlers calling IPC resize
+- [ ] 03-04-PLAN.md — Human visual and functional QA checkpoint
+
 **UI hint**: yes
 
 ## Progress
@@ -75,4 +82,4 @@ Phases execute in numeric order: 1 → 2 → 3
 |-------|----------------|--------|-----------|
 | 1. App Shell | 0/2 | Not started | - |
 | 2. Timer + Design | 0/3 | Not started | - |
-| 3. Settings Panel | 0/? | Not started | - |
+| 3. Settings Panel | 0/4 | Not started | - |
