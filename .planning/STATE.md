@@ -57,7 +57,7 @@ Recent decisions affecting current work:
 
 ### Pending Todos
 
-- Replace programmatic U8g2 draw calls with 128×64 bitmap images (user-swappable)
+None.
 
 ### Blockers/Concerns
 
@@ -68,6 +68,7 @@ None.
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 260416-w1c | UNO R3 SSD1306 OLED display software layer with PlatformIO and predefined display states | 2026-04-17 | cb11ee4 | [260416-w1c](.planning/quick/260416-w1c-uno-r3-ssd1306-oled-display-software-lay/) |
+| 260417-fvf | Replace programmatic U8g2 draw calls with XBM bitmap images for 128x64 displays | 2026-04-17 | bbe11c3 | [260417-fvf](.planning/quick/260417-fvf-replace-programmatic-u8g2-draw-calls-wit/) |
 
 ## Session Continuity
 
