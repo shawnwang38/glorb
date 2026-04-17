@@ -179,3 +179,12 @@ ipcMain.handle('notify', (event, { title, body }) => {
 
 // D-18: serial status IPC
 ipcMain.handle('serial-status', () => ({ connected: isConnected }))
+
+// Phase 6 — BEH-01/02/03: send serial command from renderer
+// D-03: silent no-op when disconnected — no throw, no log
+// D-04: cmd must include newline, e.g. 'SMILE\n' or 'DEFAULT\n'
+ipcMain.handle('send-serial', (event, cmd) => {
+  if (serialPort && serialPort.isOpen) {
+    serialPort.write(cmd)
+  }
+})
