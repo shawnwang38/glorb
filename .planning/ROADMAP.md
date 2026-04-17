@@ -35,7 +35,11 @@
   2. Calling showDisplay(OPEN_EYES) renders a centered oval on each display simultaneously
   3. Calling showDisplay(SMILE) renders a centered ^ arc on each display simultaneously
   4. A single showDisplay() call updates both displays with no extra call required
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — Create firmware source files (platformio.ini, display.h, display.cpp, main.cpp) for two-display architecture
+- [ ] 04-02-PLAN.md — Upload firmware to Arduino and visually verify both OLED displays
 
 ### Phase 5: Serial Integration
 **Goal**: Firmware accepts "DEFAULT\n" and "SMILE\n" commands over USB serial, and the Electron app auto-detects the Arduino port and maintains a live connection
@@ -65,6 +69,6 @@
 | 1. App Shell | v1.0 | 2/2 | Complete | 2026-04-16 |
 | 2. Timer + Design | v1.0 | 3/3 | Complete | 2026-04-16 |
 | 3. Settings Panel | v1.0 | 4/4 | Complete | 2026-04-16 |
-| 4. Dual Display Firmware | v1.1 | 0/? | Not started | - |
+| 4. Dual Display Firmware | v1.1 | 0/2 | Not started | - |
 | 5. Serial Integration | v1.1 | 0/? | Not started | - |
 | 6. Timer Event Wiring | v1.1 | 0/? | Not started | - |
