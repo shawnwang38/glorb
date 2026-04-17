@@ -467,7 +467,7 @@ body.dark #app,
 body.dark #settings-panel,
 body.dark #quit-overlay {
   background: #171719;
-  color: #f0f0f0;
+  color: #c0c0c8;
 }
 
 body.dark #btn-close,
@@ -480,7 +480,7 @@ body.dark #btn-close:hover,
 body.dark #btn-theme:hover,
 body.dark #btn-hamburger:hover {
   background: rgba(255, 255, 255, 0.08);
-  color: #f0f0f0;
+  color: #c0c0c8;
 }
 
 body.dark .hamburger-bars span {
@@ -491,7 +491,7 @@ body.dark #time-display,
 body.dark .time-nums,
 body.dark #focus-message,
 body.dark .settings-label {
-  color: #f0f0f0;
+  color: #c0c0c8;
 }
 
 body.dark .settings-label {
@@ -499,7 +499,7 @@ body.dark .settings-label {
 }
 
 body.dark #ring-progress {
-  stroke: #f0f0f0;
+  stroke: #c0c0c8;
 }
 
 body.dark circle[stroke="rgba(0, 0, 0, 0.15)"] {
@@ -515,9 +515,9 @@ body.dark #glorb-vignette {
 }
 
 body.dark #btn-start {
-  background: #f0f0f0;
+  background: #c0c0c8;
   color: #171719;
-  border-color: #f0f0f0;
+  border-color: #c0c0c8;
 }
 
 body.dark #btn-start:hover {
@@ -526,9 +526,9 @@ body.dark #btn-start:hover {
 }
 
 body.dark #btn-quit {
-  background: #f0f0f0;
+  background: #c0c0c8;
   color: #171719;
-  border-color: #f0f0f0;
+  border-color: #c0c0c8;
 }
 
 body.dark #btn-quit:hover {
@@ -537,7 +537,7 @@ body.dark #btn-quit:hover {
 }
 
 body.dark #btn-keep {
-  color: #f0f0f0;
+  color: #c0c0c8;
   border-color: rgba(255, 255, 255, 0.25);
 }
 
@@ -546,7 +546,7 @@ body.dark #btn-keep:hover {
 }
 
 body.dark .strength-btn {
-  color: #f0f0f0;
+  color: #c0c0c8;
   border-color: rgba(255, 255, 255, 0.2);
 }
 
@@ -555,9 +555,9 @@ body.dark .strength-btn:not(.active):hover {
 }
 
 body.dark .strength-btn.active {
-  background: #f0f0f0;
+  background: #c0c0c8;
   color: #171719;
-  border-color: #f0f0f0;
+  border-color: #c0c0c8;
 }
 
 body.dark #user-name:hover {
@@ -565,9 +565,44 @@ body.dark #user-name:hover {
 }
 
 body.dark #name-input {
-  color: #f0f0f0;
+  color: #c0c0c8;
 }
 
 body.dark #glorb-placeholder {
   background: #333336;
+}
+
+/* === Phase 5: Hardware Status Dot === */
+
+#hardware-section {
+  padding: 0 20px 16px;
+}
+
+#hardware-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-dot.connected {
+  background-color: #4CAF50;  /* green */
+}
+
+.status-dot.disconnected {
+  background-color: #9E9E9E;  /* grey */
+}
+
+#serial-status-label {
+  font-size: 12px;
+  color: inherit;
+  opacity: 0.7;
 }

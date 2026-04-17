@@ -132,6 +132,15 @@
           <button class="strength-btn" id="btn-retake">Retake Test</button>
         </div>
       </div>
+
+      <!-- Hardware status (Phase 5 — serial connection dot) -->
+      <div id="hardware-section">
+        <p class="settings-label">Hardware</p>
+        <div id="hardware-status">
+          <span id="serial-status-dot" class="status-dot disconnected"></span>
+          <span id="serial-status-label">No device</span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -474,6 +483,33 @@
     // Restore theme on load
     window.glorb.storeGet('theme', 'light').then(savedTheme => {
       applyTheme(savedTheme === 'dark')
+    })
+
+    // === Phase 5: Serial Status Dot ===
+
+    const serialDot = document.getElementById('serial-status-dot')
+    const serialLabel = document.getElementById('serial-status-label')
+
+    function applySerialStatus(connected) {
+      if (connected) {
+        serialDot.className = 'status-dot connected'
+        serialLabel.textContent = 'Connected'
+      } else {
+        serialDot.className = 'status-dot disconnected'
+        serialLabel.textContent = 'No device'
+      }
+    }
+
+    // Query current state when settings panel opens
+    const _origOpenSettings = openSettings
+    function openSettings() {
+      _origOpenSettings()
+      window.glorb.serialStatus().then(({ connected }) => applySerialStatus(connected))
+    }
+
+    // React to connection changes while panel is open (D-18: push from main)
+    window.glorb.onSerialStatus(({ connected }) => {
+      if (settingsOpen) applySerialStatus(connected)
     })
   </script>
 </body>
