@@ -25,21 +25,21 @@
     <!-- Theme toggle button (sun/moon) -->
     <button id="btn-theme" aria-label="Toggle dark/light theme">
       <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <!-- Sun icon — visible in dark mode (click to go light) -->
+        <!-- Sun icon (Lucide-style outline) — visible in dark mode (click to go light) -->
         <g id="icon-sun" style="display:none;">
-          <circle cx="8" cy="8" r="3.5" fill="currentColor"/>
-          <line x1="8" y1="1" x2="8" y2="2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="8" y1="13.5" x2="8" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="1" y1="8" x2="2.5" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="13.5" y1="8" x2="15" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="2.93" y1="2.93" x2="4" y2="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="12" y1="12" x2="13.07" y2="13.07" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="13.07" y1="2.93" x2="12" y2="4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="4" y1="12" x2="2.93" y2="13.07" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+          <line x1="8" y1="1.5" x2="8" y2="3" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+          <line x1="8" y1="13" x2="8" y2="14.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+          <line x1="1.5" y1="8" x2="3" y2="8" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+          <line x1="13" y1="8" x2="14.5" y2="8" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+          <line x1="3.4" y1="3.4" x2="4.5" y2="4.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+          <line x1="11.5" y1="11.5" x2="12.6" y2="12.6" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+          <line x1="12.6" y1="3.4" x2="11.5" y2="4.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+          <line x1="4.5" y1="11.5" x2="3.4" y2="12.6" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
         </g>
-        <!-- Moon icon — visible in light mode (click to go dark) -->
+        <!-- Moon icon (Lucide-style outline) — visible in light mode (click to go dark) -->
         <g id="icon-moon" style="display:block;">
-          <path d="M11 4a6 6 0 1 0 0 8 4.5 4.5 0 1 1 0-8z" fill="currentColor"/>
+          <path d="M13 9.5A5.5 5.5 0 0 1 6.5 3a5.5 5.5 0 1 0 6.5 6.5z" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
         </g>
       </svg>
     </button>
@@ -194,9 +194,11 @@
     }
 
     function tick() {
-      remaining -= 1
+      const elapsed = Math.floor((Date.now() - sessionStartTime) / 1000)
+      remaining = getTotalSeconds() - elapsed
       if (remaining <= 0) {
         remaining = 0
+        window.glorb.notify('Glorb', 'Focus session complete.')
         updateRing(0)
         timeDisplay.innerHTML = formatTime(0)
         addFocusTime(getTotalSeconds())
@@ -445,7 +447,7 @@
     const btnTheme = document.getElementById('btn-theme')
     const iconSun = document.getElementById('icon-sun')
     const iconMoon = document.getElementById('icon-moon')
-    const glorb = document.getElementById('glorb-img')
+    const glorbImg = document.getElementById('glorb-img')
 
     let isDark = false
 
@@ -453,12 +455,12 @@
       isDark = dark
       if (dark) {
         document.body.classList.add('dark')
-        glorb.src = 'glorb_dark.png'
+        glorbImg.src = 'glorb_dark.png'
         iconSun.style.display = 'block'
         iconMoon.style.display = 'none'
       } else {
         document.body.classList.remove('dark')
-        glorb.src = 'glorb_light.png'
+        glorbImg.src = 'glorb_light.png'
         iconSun.style.display = 'none'
         iconMoon.style.display = 'block'
       }
