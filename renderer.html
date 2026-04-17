@@ -270,10 +270,8 @@
       if (timerState === 'idle') {
         ringProgress.style.transition = 'stroke-dashoffset 1s linear'
         timerState = 'running'
-        // D-05: SMILE fires immediately on start; reverts to DEFAULT after 5s
         clearSerialRevert()
-        sendSmile()
-        serialRevertTimer = setTimeout(sendDefault, 5000)
+        sendDefault()
         sessionStartTime = Date.now()
         btnStart.textContent = 'Unfocus'
         intervalId = setInterval(tick, 1000)
