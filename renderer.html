@@ -232,6 +232,16 @@
         updateRing(0)
         timeDisplay.innerHTML = formatTime(0)
         addFocusTime(getTotalSeconds())
+        // BEH-02/03: latch SMILE until window opened (minimum 5s)
+        // D-07: if window already visible, just show brief 5s SMILE (no latch)
+        clearSerialRevert()
+        sendSmile()
+        latchEndTime = Date.now() + 5000
+        if (document.visibilityState === 'visible') {
+          // Window is open now — treat as immediate latch release after 5s
+          latchEndTime = 0
+          serialRevertTimer = setTimeout(sendDefault, 5000)
+        }
         resetTimer()
         return
       }
@@ -260,11 +270,19 @@
       if (timerState === 'idle') {
         ringProgress.style.transition = 'stroke-dashoffset 1s linear'
         timerState = 'running'
+        // D-05: SMILE fires immediately on start; reverts to DEFAULT after 5s
+        clearSerialRevert()
+        sendSmile()
+        serialRevertTimer = setTimeout(sendDefault, 5000)
         sessionStartTime = Date.now()
         btnStart.textContent = 'Unfocus'
         intervalId = setInterval(tick, 1000)
         syncHandleVisibility()
       } else if (timerState === 'running') {
+        // D-06: cancel → DEFAULT immediately, clear pending revert
+        clearSerialRevert()
+        latchEndTime = 0
+        sendDefault()
         const elapsed = Math.round((Date.now() - sessionStartTime) / 1000)
         addFocusTime(elapsed)
         resetTimer()
@@ -396,6 +414,21 @@
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'hidden' && settingsOpen) {
         closeSettings()
+      }
+      // D-09/D-10: release latch when user opens the window
+      if (document.visibilityState === 'visible' && latchEndTime > 0) {
+        const remaining5s = latchEndTime - Date.now()
+        if (remaining5s > 0) {
+          // minimum 5s not yet elapsed — defer DEFAULT until it expires
+          serialRevertTimer = setTimeout(() => {
+            sendDefault()
+            latchEndTime = 0
+          }, remaining5s)
+        } else {
+          // 5s minimum already elapsed — send DEFAULT immediately
+          sendDefault()
+        }
+        latchEndTime = 0
       }
     })
 
