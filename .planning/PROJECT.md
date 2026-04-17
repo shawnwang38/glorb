@@ -8,6 +8,18 @@ Glorb is a macOS menu bar Pomodoro timer app. It lives in the system menu bar an
 
 The timer counts down reliably and the app stays out of the way until needed.
 
+## Current Milestone: v1.1 Hardware Eyes
+
+**Goal:** Wire the Glorb Electron app to two SSD1306 OLEDs on an Arduino UNO so Glorb's physical eyes react to timer events.
+
+**Target features:**
+- Firmware: two displays (Display 1 = A4/A5 hardware I2C, Display 2 = A2/A3 software I2C), each showing one eye
+- Two eye states: OPEN_EYES (centered oval) and SMILE (^ arc), one call updates both displays
+- USB serial listener in firmware: accepts "DEFAULT\n" / "SMILE\n" commands
+- Electron: auto-detect Arduino serial port, send state commands
+- Timer start → SMILE for 5s → DEFAULT
+- Timer complete → SMILE latched until window opened (min 5s)
+
 ## Requirements
 
 ### Validated
@@ -24,7 +36,18 @@ The timer counts down reliably and the app stays out of the way until needed.
 - ✓ Dark/light theme toggle with persistence — v1.0 quick tasks
 - ✓ Push notification on focus session completion — v1.0 quick tasks
 
-### Active
+### Active (v1.1)
+
+- [ ] Firmware updated for two displays: Display 1 on A4/A5 (hardware I2C), Display 2 on A2/A3 (software I2C)
+- [ ] showDisplay(DisplayState) updates both displays simultaneously
+- [ ] OPEN_EYES state: centered oval on each display
+- [ ] SMILE state: centered ^ arc on each display
+- [ ] Firmware serial listener: "DEFAULT\n" → OPEN_EYES, "SMILE\n" → SMILE
+- [ ] Electron auto-detects Arduino serial port on startup
+- [ ] Timer start triggers SMILE for 5s then DEFAULT
+- [ ] Timer complete triggers SMILE latched until window opened (min 5s)
+
+### Deferred
 
 - [ ] Break timer (5-min / 15-min) after work session
 - [ ] Session count tracker (4 pomodoros = long break)
@@ -83,4 +106,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-16 after v1.0 milestone — Phase 3 complete, all requirements shipped*
+*Last updated: 2026-04-16 — v1.1 milestone started: Hardware Eyes*
