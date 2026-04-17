@@ -69,7 +69,7 @@ Plans:
 - [x] 03-01-PLAN.md — IPC bridge: extend preload.js + main.js with resize-window channel
 - [x] 03-02-PLAN.md — HTML + CSS: settings panel DOM, slide animation, strength selector, Retake Test button
 - [x] 03-03-PLAN.md — JS wiring: hamburger + close button toggle handlers calling IPC resize
-- [ ] 03-04-PLAN.md — Human visual and functional QA checkpoint
+- [x] 03-04-PLAN.md — Human visual and functional QA checkpoint
 
 **UI hint**: yes
 
