@@ -13,14 +13,16 @@ U8G2_SSD1306_128X64_NONAME_2_HW_I2C u8g2_hw(U8G2_R1, U8X8_PIN_NONE);
 U8G2_SSD1306_128X64_NONAME_2_SW_I2C u8g2_sw(U8G2_R3, /*clock=*/17, /*data=*/16, U8X8_PIN_NONE);
 
 static void drawEyePage(U8G2 &u8g2) {
+    // D-05: outline only (drawEllipse not drawFilledEllipse) — dark center, lit ring
     u8g2.setDrawColor(1);
-    u8g2.drawFilledEllipse(32, 64, 20, 30, U8G2_DRAW_ALL);
+    u8g2.drawEllipse(32, 64, 20, 30, U8G2_DRAW_ALL);
 }
 
 static void drawSmilePage(U8G2 &u8g2) {
-    u8g2.setFont(u8g2_font_logisoso32_tr);
-    int charW = u8g2.getStrWidth("^");
-    u8g2.drawStr((64 - charW) / 2, 80, "^");
+    // D-06: upper arc of ellipse — upper ~30% of ellipse outline = ^ arc shape
+    // rx=20 matches OPEN_EYES width; ry=10 gives gentle curve; cy=72 centers on canvas
+    u8g2.setDrawColor(1);
+    u8g2.drawEllipse(32, 72, 20, 10, U8G2_DRAW_UPPER_LEFT | U8G2_DRAW_UPPER_RIGHT);
 }
 
 void displaySetup() {
