@@ -193,6 +193,10 @@
       window.glorb.sendSerial('SMILE\n')
     }
 
+    function sendAngry() {
+      window.glorb.sendSerial('ANGRY\n')
+    }
+
     function sendDefault() {
       window.glorb.sendSerial('DEFAULT\n')
     }
@@ -232,15 +236,18 @@
         updateRing(0)
         timeDisplay.innerHTML = formatTime(0)
         addFocusTime(getTotalSeconds())
-        // BEH-02/03: latch SMILE until window opened (minimum 5s)
-        // D-07: if window already visible, just show brief 5s SMILE (no latch)
+        // BEH-02/03: ANGRY on complete, then SMILE after 3s, then DEFAULT after latch
+        // D-07: if window already visible, brief ANGRY for 3s, brief SMILE for 2s, then DEFAULT
         clearSerialRevert()
-        sendSmile()
+        sendAngry()
         latchEndTime = Date.now() + 5000
         if (document.visibilityState === 'visible') {
-          // Window is open now — treat as immediate latch release after 5s
           latchEndTime = 0
-          serialRevertTimer = setTimeout(sendDefault, 5000)
+          // Show ANGRY for 3s, then SMILE for 2s, then DEFAULT
+          serialRevertTimer = setTimeout(() => {
+            sendSmile()
+            serialRevertTimer = setTimeout(sendDefault, 2000)
+          }, 3000)
         }
         resetTimer()
         return
@@ -414,17 +421,21 @@
         closeSettings()
       }
       // D-09/D-10: release latch when user opens the window
+      // ANGRY was sent on complete — show SMILE briefly then DEFAULT
       if (document.visibilityState === 'visible' && latchEndTime > 0) {
         const remaining5s = latchEndTime - Date.now()
         if (remaining5s > 0) {
-          // minimum 5s not yet elapsed — defer DEFAULT until it expires
+          // minimum 5s not yet elapsed — defer SMILE->DEFAULT until it expires
           serialRevertTimer = setTimeout(() => {
-            sendDefault()
+            sendSmile()
             latchEndTime = 0
+            setTimeout(sendDefault, 2000)
           }, remaining5s)
         } else {
-          // 5s minimum already elapsed — send DEFAULT immediately
-          sendDefault()
+          // 5s minimum already elapsed — send SMILE then DEFAULT immediately
+          sendSmile()
+          latchEndTime = 0
+          setTimeout(sendDefault, 2000)
         }
         latchEndTime = 0
       }
