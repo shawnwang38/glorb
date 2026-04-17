@@ -114,6 +114,7 @@ function openPort(portPath) {
     }
     isConnected = true
     notifyConnectionState()
+    serialPort.write('DEFAULT\n')  // initialize displays to open eyes on connect
   })
 
   serialPort.on('close', () => {
