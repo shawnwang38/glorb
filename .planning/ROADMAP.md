@@ -50,7 +50,13 @@ Plans:
   2. Sending "SMILE\n" over serial transitions both displays to SMILE
   3. On app startup, Electron finds and opens the Arduino serial port without any manual configuration
   4. Electron maintains the serial connection while the Arduino remains plugged in
-**Plans**: TBD
+**Plans**: 4 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — Update firmware: serial command parser in main.cpp + updated display graphics in display.cpp
+- [ ] 05-02-PLAN.md — Electron serial core: install serialport, auto-detect + reconnect lifecycle in main.js, IPC in preload.js
+- [ ] 05-03-PLAN.md — Settings panel status dot: hardware connection indicator in renderer
+- [ ] 05-04-PLAN.md — Upload firmware and verify full end-to-end serial integration (hardware checkpoint)
 
 ### Phase 6: Timer Event Wiring
 **Goal**: Timer start and timer complete events drive the eye displays with the correct timing and latch behavior
@@ -70,5 +76,5 @@ Plans:
 | 2. Timer + Design | v1.0 | 3/3 | Complete | 2026-04-16 |
 | 3. Settings Panel | v1.0 | 4/4 | Complete | 2026-04-16 |
 | 4. Dual Display Firmware | v1.1 | 0/2 | Not started | - |
-| 5. Serial Integration | v1.1 | 0/? | Not started | - |
+| 5. Serial Integration | v1.1 | 0/4 | Not started | - |
 | 6. Timer Event Wiring | v1.1 | 0/? | Not started | - |
