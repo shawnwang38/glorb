@@ -12,20 +12,25 @@ The timer counts down reliably and the app stays out of the way until needed.
 
 ### Validated
 
-(None yet — ship to validate)
+- ✓ App lives in macOS menu bar (no Dock icon) — v1.0 Phase 1
+- ✓ Small portrait window with ring timer showing glorb.png at center — v1.0 Phase 2
+- ✓ Ring timer counts down with animated progress (configurable 1–60 min) — v1.0 Phase 2
+- ✓ Time display shows "XXh XXm XXs" format below ring — v1.0 Phase 2
+- ✓ Start/Pause button below time display — v1.0 Phase 2
+- ✓ Hamburger menu (top right) expands window to reveal settings panel — v1.0 Phase 3
+- ✓ Settings panel: focus summary with persisted user name and time — v1.0 Phase 3
+- ✓ Settings panel: Strength selector (Auto/Weak/Strong) with persistence — v1.0 Phase 3
+- ✓ Settings panel: "Retake Test" button — v1.0 Phase 3
+- ✓ Dark/light theme toggle with persistence — v1.0 quick tasks
+- ✓ Push notification on focus session completion — v1.0 quick tasks
 
 ### Active
 
-- [ ] App lives in macOS menu bar (no Dock icon)
-- [ ] Small portrait window with ring timer showing glorb.png at center
-- [ ] Ring timer counts down 25 minutes with animated progress
-- [ ] Time display shows "00h 00m" format below ring
-- [ ] Start/Pause button below time display
-- [ ] Hamburger menu (top right) expands window to reveal settings panel
-- [ ] Settings panel: focus summary ("Hi Name, you've focused for xxh xxm with Glorb.")
-- [ ] Settings panel: Strength selector (Auto/Weak/Strong) — UI only
-- [ ] Settings panel: "Retake Test" button — UI only
-- [ ] Minimalist B&W design with orange highlights, modern sans serif font
+- [ ] Break timer (5-min / 15-min) after work session
+- [ ] Session count tracker (4 pomodoros = long break)
+- [ ] Configurable timer durations via settings panel
+- [ ] Focus history persisted across app restarts
+- [ ] Strength setting wired to actual behavior
 
 ### Out of Scope
 
@@ -53,10 +58,12 @@ The timer counts down reliably and the app stays out of the way until needed.
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Electron over Tauri/SwiftUI | Fastest path to match exact UI spec; user can swap later | — Pending |
-| Vanilla JS (no React/Vue) | Simple enough; avoids build toolchain overhead | — Pending |
-| SVG ring timer | Smooth animation, full CSS control, no canvas needed | — Pending |
-| Horizontal window expansion | Settings panel feels native/spatial without a modal | — Pending |
+| Electron over Tauri/SwiftUI | Fastest path to match exact UI spec; user can swap later | ✓ Good — shipped in 3 phases |
+| Vanilla JS (no React/Vue) | Simple enough; avoids build toolchain overhead | ✓ Good — no build complexity |
+| SVG ring timer | Smooth animation, full CSS control, no canvas needed | ✓ Good — smooth countdown |
+| Horizontal window expansion | Settings panel feels native/spatial without a modal | ✓ Good — 720px expanded feels spacious |
+| electron-store for persistence | Simple KV store for theme, name, strength, focus time | ✓ Good — no DB needed |
+| Dark/light theme toggle | sun/moon icon, glorb_light/dark.png swap | ✓ Good — added post-Phase 3 |
 
 ## Evolution
 
@@ -76,4 +83,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-16 after initialization*
+*Last updated: 2026-04-16 after v1.0 milestone — Phase 3 complete, all requirements shipped*
