@@ -17,6 +17,8 @@ void loop() {
         showDisplay(DisplayState::OPEN_EYES);
     } else if (cmd == "SMILE") {
         showDisplay(DisplayState::SMILE);
+    } else if (cmd == "ANGRY") {
+        showDisplay(DisplayState::ANGRY);
     }
     // Unknown commands silently ignored
 }

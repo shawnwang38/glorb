@@ -19,9 +19,14 @@ void displaySetup() {
 }
 
 void showDisplay(DisplayState state) {
-    const uint8_t* bmp = (state == DisplayState::OPEN_EYES)
-        ? open_eyes_bits
-        : smile_bits;
+    const uint8_t* bmp;
+    if (state == DisplayState::OPEN_EYES) {
+        bmp = open_eyes_bits;
+    } else if (state == DisplayState::SMILE) {
+        bmp = smile_bits;
+    } else {
+        bmp = angry_bits;
+    }
 
     u8g2_hw.firstPage();
     do {

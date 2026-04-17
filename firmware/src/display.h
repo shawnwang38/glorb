@@ -2,7 +2,8 @@
 
 enum class DisplayState {
     OPEN_EYES,
-    SMILE
+    SMILE,
+    ANGRY
 };
 
 void displaySetup();
