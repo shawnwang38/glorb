@@ -69,8 +69,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 06-01-PLAN.md — IPC plumbing: add send-serial handler in main.js and sendSerial in preload.js
-- [ ] 06-02-PLAN.md — Renderer wiring: timer start/cancel/complete hooks and latch release logic in renderer.html
+- [x] 06-01-PLAN.md — IPC plumbing: add send-serial handler in main.js and sendSerial in preload.js
+- [x] 06-02-PLAN.md — Renderer wiring: timer start/cancel/complete hooks and latch release logic in renderer.html
 
 ## Progress
 
