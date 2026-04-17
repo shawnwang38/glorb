@@ -66,7 +66,11 @@ Plans:
   1. Starting the timer sends SMILE to the displays, which revert to DEFAULT after 5 seconds
   2. Timer completion latches SMILE on the displays until the user opens the Glorb window
   3. If the window is opened before 5 seconds have elapsed after timer complete, SMILE persists for the remainder of that 5-second minimum
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 06-01-PLAN.md — IPC plumbing: add send-serial handler in main.js and sendSerial in preload.js
+- [ ] 06-02-PLAN.md — Renderer wiring: timer start/cancel/complete hooks and latch release logic in renderer.html
 
 ## Progress
 
@@ -77,4 +81,4 @@ Plans:
 | 3. Settings Panel | v1.0 | 4/4 | Complete | 2026-04-16 |
 | 4. Dual Display Firmware | v1.1 | 0/2 | Not started | - |
 | 5. Serial Integration | v1.1 | 0/4 | Not started | - |
-| 6. Timer Event Wiring | v1.1 | 0/? | Not started | - |
+| 6. Timer Event Wiring | v1.1 | 0/2 | Not started | - |
