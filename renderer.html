@@ -183,6 +183,27 @@
     let intervalId = null
     let sessionStartTime = null
 
+    // === Phase 6: Serial Eye State ===
+    // D-02: 5s revert timeout lives in renderer
+    // D-10: latch stored as timestamp; 0 means no active latch
+    let serialRevertTimer = null   // setTimeout id for SMILE→DEFAULT revert (timer start)
+    let latchEndTime = 0           // ms timestamp; >0 means complete-latch active
+
+    function sendSmile() {
+      window.glorb.sendSerial('SMILE\n')
+    }
+
+    function sendDefault() {
+      window.glorb.sendSerial('DEFAULT\n')
+    }
+
+    function clearSerialRevert() {
+      if (serialRevertTimer !== null) {
+        clearTimeout(serialRevertTimer)
+        serialRevertTimer = null
+      }
+    }
+
     function formatTime(secs) {
       const m = Math.floor(secs / 60)
       const s = secs % 60
