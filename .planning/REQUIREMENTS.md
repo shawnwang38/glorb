@@ -48,23 +48,23 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FW-01 | — | Pending |
-| FW-02 | — | Pending |
-| FW-03 | — | Pending |
-| FW-04 | — | Pending |
-| SER-01 | — | Pending |
-| SER-02 | — | Pending |
-| SER-03 | — | Pending |
-| SER-04 | — | Pending |
-| BEH-01 | — | Pending |
-| BEH-02 | — | Pending |
-| BEH-03 | — | Pending |
+| FW-01 | Phase 4 | Pending |
+| FW-02 | Phase 4 | Pending |
+| FW-03 | Phase 4 | Pending |
+| FW-04 | Phase 4 | Pending |
+| SER-01 | Phase 5 | Pending |
+| SER-02 | Phase 5 | Pending |
+| SER-03 | Phase 5 | Pending |
+| SER-04 | Phase 5 | Pending |
+| BEH-01 | Phase 6 | Pending |
+| BEH-02 | Phase 6 | Pending |
+| BEH-03 | Phase 6 | Pending |
 
 **Coverage:**
 - v1.1 requirements: 11 total
-- Mapped to phases: 0 (pending roadmap)
-- Unmapped: 11 ⚠️
+- Mapped to phases: 11 ✓
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-16*
-*Last updated: 2026-04-16 after initial definition*
+*Last updated: 2026-04-16 after roadmap creation*
