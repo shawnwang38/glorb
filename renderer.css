@@ -575,7 +575,7 @@ body.dark #glorb-placeholder {
 /* === Phase 5: Hardware Status Dot === */
 
 #hardware-section {
-  padding: 0 20px 16px;
+  margin-bottom: 20px;
 }
 
 #hardware-status {

@@ -87,14 +87,16 @@ function notifyConnectionState() {
 function startReconnectLoop() {
   if (reconnectTimer) return  // already polling
   reconnectTimer = setInterval(async () => {
-    if (isConnected) {
-      clearInterval(reconnectTimer)
-      reconnectTimer = null
-      return
-    }
     const portPath = await findArduinoPort()
-    if (portPath) {
-      openPort(portPath)
+    if (isConnected) {
+      // Detect unplug: port no longer listed
+      if (!portPath) {
+        isConnected = false
+        if (serialPort) { serialPort.destroy(); serialPort = null }
+        notifyConnectionState()
+      }
+    } else {
+      if (portPath) openPort(portPath)
     }
   }, 3000)  // D-14: poll every 3 seconds
 }
@@ -134,12 +136,8 @@ function openPort(portPath) {
 async function initSerial() {
   // D-13: attempt auto-detect on startup
   const portPath = await findArduinoPort()
-  if (portPath) {
-    openPort(portPath)
-  } else {
-    // D-12: no port found — proceed silently, start polling for later plug-in
-    startReconnectLoop()
-  }
+  if (portPath) openPort(portPath)
+  startReconnectLoop()  // D-14/D-15: always poll for connect and disconnect
 }
 
 app.dock.hide()

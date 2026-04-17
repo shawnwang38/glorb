@@ -262,6 +262,9 @@
       appEl.classList.add('settings-open')
       btnHamburger.setAttribute('aria-label', 'Close settings')
       window.glorb.resize(720, 468)
+      if (window.glorb.serialStatus) {
+        window.glorb.serialStatus().then(({ connected }) => applySerialStatus(connected))
+      }
     }
 
     function closeSettings() {
@@ -498,13 +501,6 @@
         serialDot.className = 'status-dot disconnected'
         serialLabel.textContent = 'No device'
       }
-    }
-
-    // Query current state when settings panel opens
-    const _origOpenSettings = openSettings
-    function openSettings() {
-      _origOpenSettings()
-      window.glorb.serialStatus().then(({ connected }) => applySerialStatus(connected))
     }
 
     // React to connection changes while panel is open (D-18: push from main)

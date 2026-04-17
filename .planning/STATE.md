@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Hardware Eyes
-status: planning
-stopped_at: Phase 5 context gathered
-last_updated: "2026-04-17T08:16:21.302Z"
-last_activity: 2026-04-17
+status: executing
+stopped_at: Phase 05 complete, ready for Phase 06
+last_updated: "2026-04-17T00:00:00.000Z"
+last_activity: 2026-04-17 -- Phase 05 verified and complete
 progress:
   total_phases: 3
-  completed_phases: 1
-  total_plans: 2
-  completed_plans: 2
-  percent: 100
+  completed_phases: 2
+  total_plans: 6
+  completed_plans: 6
+  percent: 67
 ---
 
 # Project State
@@ -21,24 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-16)
 
 **Core value:** The timer counts down reliably and the app stays out of the way until needed.
-**Current focus:** Phase 4 — Dual Display Firmware
+**Current focus:** Phase 06 — Timer Event Wiring
 
 ## Current Position
 
-Phase: 5 of 6 (serial integration)
-Plan: Not started
-Status: Ready to plan
-Last activity: 2026-04-17
+Phase: 05 (Serial Integration) — COMPLETE
+Next: Phase 06 — Timer Event Wiring
+Status: Phase 05 verified, ready to plan/execute Phase 06
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [██████░░░░] 67%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 2
-- Average duration: -
-- Total execution time: 0 hours
+- Total plans completed: 6
+- Average duration: ~10 min/plan
+- Total execution time: ~1 hour
 
 *Updated after each plan completion*
 
@@ -53,14 +52,16 @@ Recent decisions affecting current work:
 - [v1.1]: Two displays on separate I2C buses — Display 1 hardware I2C (A4/A5), Display 2 software I2C (A2/A3)
 - [v1.1]: USB serial for Electron↔Arduino communication ("DEFAULT\n" / "SMILE\n")
 - [v1.1]: Firmware phases kept separate from Electron integration phases
+- [v1.1 Ph05]: Disconnect detection uses polling (macOS doesn't reliably fire SerialPort close on USB unplug)
+- [v1.1 Ph05]: openSettings serial query inlined — double function declaration wrapper caused hoisting bug
 
 ### Pending Todos
 
-None yet.
+- Replace programmatic U8g2 draw calls with 128×64 bitmap images (user-swappable)
 
 ### Blockers/Concerns
 
-- User must rewire Display 2 SDA/SCL from A4/A5 to A2/A3 on breadboard before Phase 4 firmware upload
+None.
 
 ### Quick Tasks Completed
 
@@ -70,6 +71,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-17T08:16:21.300Z
-Stopped at: Phase 5 context gathered
-Resume file: .planning/phases/05-serial-integration/05-CONTEXT.md
+Last session: 2026-04-17
+Stopped at: Phase 05 complete, Phase 06 ready
+Resume file: .planning/phases/06-timer-events/06-CONTEXT.md
