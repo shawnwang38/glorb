@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Tray, nativeImage, ipcMain, globalShortcut } = require('electron')
+const { app, BrowserWindow, Tray, nativeImage, ipcMain, globalShortcut, Notification } = require('electron')
 const path = require('path')
 const Store = require('electron-store')
 const store = new Store()
@@ -31,7 +31,7 @@ function createWindow () {
 
 function createTray () {
   const trayIcon = nativeImage
-    .createFromPath(path.join(__dirname, 'glorb.png'))
+    .createFromPath(path.join(__dirname, 'glorb_icon.png'))
     .resize({ width: 18, height: 18 })
   trayIcon.setTemplateImage(true)
 
@@ -83,3 +83,7 @@ ipcMain.handle('resize-window', (event, { width, height }) => {
 
 ipcMain.handle('store-get', (event, key, defaultVal) => store.get(key, defaultVal))
 ipcMain.handle('store-set', (event, key, value) => { store.set(key, value) })
+
+ipcMain.handle('notify', (event, { title, body }) => {
+  new Notification({ title, body }).show()
+})
