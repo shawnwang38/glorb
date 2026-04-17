@@ -7,5 +7,6 @@ contextBridge.exposeInMainWorld('glorb', {
   storeSet: (key, value) => ipcRenderer.invoke('store-set', key, value),
   notify: (title, body) => ipcRenderer.invoke('notify', { title, body }),
   serialStatus: () => ipcRenderer.invoke('serial-status'),
-  onSerialStatus: (callback) => ipcRenderer.on('serial-status-changed', (_event, data) => callback(data))
+  onSerialStatus: (callback) => ipcRenderer.on('serial-status-changed', (_event, data) => callback(data)),
+  sendSerial: (cmd) => ipcRenderer.invoke('send-serial', cmd)
 })
