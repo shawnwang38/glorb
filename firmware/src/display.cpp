@@ -25,11 +25,11 @@ void showDisplay(DisplayState state) {
 
     u8g2_hw.firstPage();
     do {
-        u8g2_hw.drawXBM(0, 0, 64, 128, bmp);
+        u8g2_hw.drawXBMP(0, 0, 64, 128, bmp);
     } while (u8g2_hw.nextPage());
 
     u8g2_sw.firstPage();
     do {
-        u8g2_sw.drawXBM(0, 0, 64, 128, bmp);
+        u8g2_sw.drawXBMP(0, 0, 64, 128, bmp);
     } while (u8g2_sw.nextPage());
 }
