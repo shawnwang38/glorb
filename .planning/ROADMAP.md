@@ -38,8 +38,8 @@
 **Plans**: 2 plans
 
 Plans:
-- [ ] 04-01-PLAN.md — Create firmware source files (platformio.ini, display.h, display.cpp, main.cpp) for two-display architecture
-- [ ] 04-02-PLAN.md — Upload firmware to Arduino and visually verify both OLED displays
+- [x] 04-01-PLAN.md — Create firmware source files (platformio.ini, display.h, display.cpp, main.cpp) for two-display architecture
+- [x] 04-02-PLAN.md — Upload firmware to Arduino and visually verify both OLED displays
 
 ### Phase 5: Serial Integration
 **Goal**: Firmware accepts "DEFAULT\n" and "SMILE\n" commands over USB serial, and the Electron app auto-detects the Arduino port and maintains a live connection
