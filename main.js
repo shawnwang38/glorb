@@ -236,4 +236,8 @@ ipcMain.handle('close-onboarding', () => {
   if (onboardingWin && !onboardingWin.isDestroyed()) {
     onboardingWin.close()
   }
+  // Notify main window to refresh name/profile after onboarding completes
+  if (win && !win.isDestroyed()) {
+    win.webContents.send('onboarding-complete')
+  }
 })

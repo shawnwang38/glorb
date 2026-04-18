@@ -525,6 +525,14 @@
     })
     updateFocusMessage()
 
+    // Refresh name when onboarding completes (handles first-run and retake)
+    window.glorb.onOnboardingComplete(() => {
+      window.glorb.storeGet('userName', 'You').then(name => {
+        userNameEl.textContent = name
+        updateFocusMessage()
+      })
+    })
+
     // === Theme Toggle ===
 
     const btnTheme = document.getElementById('btn-theme')
