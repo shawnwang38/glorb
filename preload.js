@@ -10,5 +10,6 @@ contextBridge.exposeInMainWorld('glorb', {
   onSerialStatus: (callback) => ipcRenderer.on('serial-status-changed', (_event, data) => callback(data)),
   sendSerial: (cmd) => ipcRenderer.invoke('send-serial', cmd),
   closeOnboarding: () => ipcRenderer.invoke('close-onboarding'),
-  openOnboarding: () => ipcRenderer.invoke('open-onboarding')
+  openOnboarding: () => ipcRenderer.invoke('open-onboarding'),
+  onOnboardingComplete: (cb) => ipcRenderer.on('onboarding-complete', () => cb())
 })
