@@ -6,6 +6,7 @@ const store = new Store()
 
 let tray = null
 let win = null
+let onboardingWin = null
 
 // Serial connection state (D-10: main process only)
 let serialPort = null
@@ -55,6 +56,30 @@ function createTray () {
       win.show()
       win.focus()
     }
+  })
+}
+
+function createOnboardingWindow () {
+  onboardingWin = new BrowserWindow({
+    width: 800,
+    height: 620,
+    show: true,
+    frame: true,
+    resizable: false,
+    center: true,
+    alwaysOnTop: false,
+    skipTaskbar: false,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false
+    }
+  })
+
+  onboardingWin.loadFile('onboarding.html')
+
+  onboardingWin.on('closed', () => {
+    onboardingWin = null
   })
 }
 
@@ -144,7 +169,7 @@ async function initSerial() {
 app.dock.hide()
 app.setActivationPolicy('accessory')
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   createWindow()
   createTray()
   initSerial()
@@ -152,6 +177,12 @@ app.whenReady().then(() => {
   globalShortcut.register('Command+Q', () => {
     app.quit()
   })
+
+  // ONBOARD-01: show onboarding on first launch if no profile yet
+  const onboardingComplete = store.get('onboardingComplete', false)
+  if (!onboardingComplete) {
+    createOnboardingWindow()
+  }
 })
 
 app.on('window-all-closed', (e) => {
@@ -187,5 +218,22 @@ ipcMain.handle('serial-status', () => ({ connected: isConnected }))
 ipcMain.handle('send-serial', (event, cmd) => {
   if (serialPort && serialPort.isOpen) {
     serialPort.write(cmd)
+  }
+})
+
+// Phase 7 — ONBOARD-01/06: onboarding window lifecycle
+ipcMain.handle('open-onboarding', () => {
+  // Reset flag so onboarding runs from the beginning
+  store.set('onboardingComplete', false)
+  if (onboardingWin && !onboardingWin.isDestroyed()) {
+    onboardingWin.focus()
+    return
+  }
+  createOnboardingWindow()
+})
+
+ipcMain.handle('close-onboarding', () => {
+  if (onboardingWin && !onboardingWin.isDestroyed()) {
+    onboardingWin.close()
   }
 })
