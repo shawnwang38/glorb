@@ -12,9 +12,6 @@ dist/
 !README.md
 
 # Design assets / scratch files
-*.png
-!glorb_light.png
-!glorb_dark.png
-!glorb_icon.png
+selection-menu.png
 intervention-ui.md
 onboarding-ui.md
