@@ -1,6 +1,6 @@
 # Glorb
 
-macOS menu bar Pomodoro timer with OLED eye display.
+macOS menu bar Pomodoro timer with OLED eye display. Only Timer function at the moment.
 
 ## Run
 
