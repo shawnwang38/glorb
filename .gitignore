@@ -3,3 +3,18 @@ firmware/.pio/
 .DS_Store
 *.log
 dist/
+
+# Planning and AI tooling
+.claude/
+.planning/
+*.pdf
+*.md
+!README.md
+
+# Design assets / scratch files
+*.png
+!glorb_light.png
+!glorb_dark.png
+!glorb_icon.png
+intervention-ui.md
+onboarding-ui.md
