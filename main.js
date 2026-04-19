@@ -1,6 +1,8 @@
 const { app, BrowserWindow, Tray, nativeImage, ipcMain, globalShortcut, Notification, screen } = require('electron')
 const path = require('path')
 const { execFile } = require('child_process')
+const net = require('net')
+const fs = require('fs')
 const Store = require('electron-store')
 const { SerialPort } = require('serialport')
 const store = new Store()
@@ -29,6 +31,9 @@ function playNotes (count) {
 let tray = null
 let win = null
 let onboardingWin = null
+
+// Phase 8 — CLI IPC socket (D-12: dev-only, Unix domain socket)
+const SOCK_PATH = '/tmp/glorb-ipc.sock'
 
 // Phase 8 — Intervention state machine (D-09: all state in main process)
 let driftCount = 0
@@ -432,6 +437,47 @@ async function initSerial() {
   startReconnectLoop()  // D-14/D-15: always poll for connect and disconnect
 }
 
+function startSocketServer () {
+  // Clean up stale socket file from previous run
+  try { fs.unlinkSync(SOCK_PATH) } catch (_) {}
+
+  const server = net.createServer((socket) => {
+    let buf = ''
+    socket.on('data', (chunk) => {
+      buf += chunk.toString()
+      if (buf.includes('\n')) {
+        const cmd = buf.trim()
+        if (cmd === 'drift') {
+          driftCount++
+          runPath('weak-regular')  // Phase 9 will replace with dynamic routing
+          socket.write('ok\n')
+        } else if (cmd === 'refocus') {
+          if (driftCount > 0) {
+            new Notification({ title: 'Glorb', body: 'Focus regained.' }).show()
+          }
+          driftCount = 0
+          clearAllTimers()
+          socket.write('ok\n')
+        } else {
+          socket.write(`unknown command: ${cmd}\n`)
+        }
+        socket.end()
+      }
+    })
+    socket.on('error', () => {})
+  })
+
+  server.listen(SOCK_PATH, () => {
+    console.log('[glorb] CLI socket listening at', SOCK_PATH)
+  })
+
+  server.on('error', (err) => {
+    console.warn('[glorb] socket server error:', err.message)
+  })
+
+  return server
+}
+
 app.dock.hide()
 app.setActivationPolicy('accessory')
 
@@ -439,6 +485,7 @@ app.whenReady().then(async () => {
   createWindow()
   createTray()
   initSerial()
+  startSocketServer()
 
   globalShortcut.register('Command+Q', () => {
     app.quit()
@@ -453,6 +500,10 @@ app.whenReady().then(async () => {
 
 app.on('window-all-closed', (e) => {
   e.preventDefault()
+})
+
+app.on('before-quit', () => {
+  try { fs.unlinkSync(SOCK_PATH) } catch (_) {}
 })
 
 ipcMain.handle('quit-app', () => {
