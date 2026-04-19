@@ -1,8 +1,30 @@
 const { app, BrowserWindow, Tray, nativeImage, ipcMain, globalShortcut, Notification } = require('electron')
 const path = require('path')
+const { execFile } = require('child_process')
 const Store = require('electron-store')
 const { SerialPort } = require('serialport')
 const store = new Store()
+
+// Phase 8 — macOS system sound paths (D-01: afplay only, no bundled files)
+const SND = {
+  chime: '/System/Library/Sounds/Glass.aiff',
+  note1: '/System/Library/Sounds/Tink.aiff',
+  note2: '/System/Library/Sounds/Pop.aiff',
+  note3: '/System/Library/Sounds/Morse.aiff',
+  note4: '/System/Library/Sounds/Blow.aiff',
+  note5: '/System/Library/Sounds/Sosumi.aiff'
+}
+
+function playSound (filePath) {
+  execFile('afplay', [filePath], { timeout: 10000 }, () => {})
+}
+
+function playNotes (count) {
+  const sounds = [SND.note1, SND.note2, SND.note3, SND.note4, SND.note5].slice(0, count)
+  sounds.forEach((s, i) => {
+    trackTimeout(() => playSound(s), i * 300)
+  })
+}
 
 let tray = null
 let win = null
@@ -51,8 +73,76 @@ function runPath (pathId) {
   }
 }
 
-function runWeakRegular ()  { /* Plan 02 */ }
-function runWeakADHD ()     { /* Plan 02 */ }
+function weakTerminate (message) {
+  // End timer in renderer and show popup
+  if (win && !win.isDestroyed()) {
+    win.show()
+    win.focus()
+    win.webContents.send('intervention-terminate', { message })
+  }
+}
+
+function runWeakRegular () {
+  // Step 1 — 30s: push "Stay focused!" + 1 chime
+  trackTimeout(() => {
+    new Notification({ title: 'Glorb', body: 'Stay focused!' }).show()
+    playSound(SND.chime)
+
+    let pingCount = 1  // first ping already fired above
+
+    // Steps 2–3 — every 10s: 2 chimes; on 3rd ping: 3 chimes + last reminder
+    const interval = trackInterval(() => {
+      pingCount++
+      if (pingCount === 2) {
+        playSound(SND.chime)
+        trackTimeout(() => playSound(SND.chime), 400)
+      } else if (pingCount === 3) {
+        playSound(SND.chime)
+        trackTimeout(() => playSound(SND.chime), 400)
+        trackTimeout(() => playSound(SND.chime), 800)
+        new Notification({ title: 'Glorb', body: 'Last reminder — Stay focused!' }).show()
+        // Step 4 — terminate after 3rd ping fires
+        clearInterval(interval)
+        // Remove from escalationTimers so clearAllTimers won't double-clear
+        const idx = escalationTimers.indexOf(interval)
+        if (idx !== -1) escalationTimers.splice(idx, 1)
+        trackTimeout(() => weakTerminate('Ready to continue focusing?'), 10000)
+      }
+    }, 10000)
+  }, 30000)
+}
+
+function runWeakADHD () {
+  // Step 1 — 10s: push notif + 1 note
+  trackTimeout(() => {
+    new Notification({ title: 'Glorb', body: 'Stay focused!' }).show()
+    playNotes(1)
+
+    let pingCount = 1
+
+    // Steps 2-up — every 5s up to 5 pings total with increasing notes
+    const interval = trackInterval(() => {
+      pingCount++
+      if (pingCount <= 5) {
+        playNotes(pingCount)
+        if (pingCount === 5) {
+          // After 5th ping, stop interval and start constant chime for 10s
+          clearInterval(interval)
+          const idx = escalationTimers.indexOf(interval)
+          if (idx !== -1) escalationTimers.splice(idx, 1)
+          // D-02: rapid repeated afplay loop for 10s constant chiming
+          const chimeIntervalMs = 600
+          const chimeCount = Math.floor(10000 / chimeIntervalMs)
+          for (let i = 0; i < chimeCount; i++) {
+            trackTimeout(() => playSound(SND.note1), i * chimeIntervalMs)
+          }
+          // terminate after 10s constant chime
+          trackTimeout(() => weakTerminate('You lost focus.'), 10000)
+        }
+      }
+    }, 5000)
+  }, 10000)
+}
 function runStrongRegular () { /* Plan 03 */ }
 function runStrongADHD ()   { /* Plan 03 */ }
 
