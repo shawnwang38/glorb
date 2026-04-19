@@ -22,6 +22,11 @@
       </div>
     </div>
 
+    <!-- Intervention terminate popup (Phase 8 gap closure) -->
+    <div id="intervention-popup" role="alert" aria-live="assertive" style="display:none; position:absolute; inset:0; z-index:200; background:rgba(0,0,0,0.7); align-items:center; justify-content:center; border-radius:inherit;">
+      <div style="background:#fff; color:#111; border-radius:8px; padding:16px 20px; max-width:220px; text-align:center; font-size:13px; font-weight:500; line-height:1.4;" id="intervention-popup-msg"></div>
+    </div>
+
     <!-- Theme toggle button (sun/moon) -->
     <button id="btn-theme" aria-label="Toggle dark/light theme">
       <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -326,6 +331,16 @@
       }
     })
 
+    // === Phase 8: Intervention terminate popup ===
+    function showInterventionPopup(message) {
+      const popup = document.getElementById('intervention-popup')
+      const msg = document.getElementById('intervention-popup-msg')
+      if (!popup || !msg) return
+      msg.textContent = message || 'Session ended.'
+      popup.style.display = 'flex'
+      setTimeout(() => { popup.style.display = 'none' }, 5000)
+    }
+
     // === Duration ring slider ===
 
     const ringHandle = document.getElementById('ring-handle')
@@ -569,6 +584,12 @@
     // React to connection changes while panel is open (D-18: push from main)
     window.glorb.onSerialStatus(({ connected }) => {
       if (settingsOpen) applySerialStatus(connected)
+    })
+
+    // Intervention terminate: stop timer and show in-window popup (Phase 8, INTERV-03/04)
+    window.glorb.onInterventionTerminate((data) => {
+      if (typeof stopTimer === 'function') stopTimer()
+      showInterventionPopup(data.message)
     })
   </script>
 </body>
