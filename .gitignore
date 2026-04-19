@@ -4,6 +4,12 @@ firmware/.pio/
 *.log
 dist/
 
+# Python
+__pycache__/
+*.pyc
+camera_detect/venv/
+camera_detect/.venv/
+
 # Planning and AI tooling
 .claude/
 .planning/
