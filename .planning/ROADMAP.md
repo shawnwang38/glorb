@@ -53,7 +53,7 @@ Plans:
 
 ### Phase 5: Serial Integration
 **Goal**: Firmware accepts "DEFAULT\n" and "SMILE\n" commands over USB serial, and the Electron app auto-detects the Arduino port and maintains a live connection
-**Depends on**: Phase 4
+**Depends on**: Phase 5
 **Requirements**: SER-01, SER-02, SER-03, SER-04
 **Success Criteria** (what must be TRUE):
   1. Sending "DEFAULT\n" over serial transitions both displays to OPEN_EYES
@@ -113,9 +113,9 @@ Plans:
 
 Plans:
 - [x] 08-01-PLAN.md — Intervention state machine core: drift/refocus IPC handlers, timer registry, runPath dispatcher, preload.js exposure
-- [ ] 08-02-PLAN.md — Weak paths: Weak×Regular and Weak×ADHD escalation sequences with push notifications, audio, in-window terminate popup
-- [ ] 08-03-PLAN.md — Strong paths + overlay windows: Strong×Regular and Strong×ADHD, flash/vignette/terminate HTML files, audio fade
-- [ ] 08-04-PLAN.md — CLI simulator: simulate.js Unix socket client, main.js socket server, end-to-end test
+- [x] 08-02-PLAN.md — Weak paths: Weak×Regular and Weak×ADHD escalation sequences with push notifications, audio, in-window terminate popup
+- [x] 08-03-PLAN.md — Strong paths + overlay windows: Strong×Regular and Strong×ADHD, flash/vignette/terminate HTML files, audio fade
+- [x] 08-04-PLAN.md — CLI simulator: simulate.js Unix socket client, main.js socket server, end-to-end test
 
 ### Phase 9: Focus Wiring
 **Goal**: The strength selector and ADHD diagnosis stored during onboarding automatically route every drift event to the correct intervention path with no manual configuration
@@ -125,7 +125,11 @@ Plans:
   1. With Strength set to "Weak", triggering drift runs the Weak intervention path
   2. With Strength set to "Strong", triggering drift runs the Strong intervention path
   3. With hasADHD: true in store, the ADHD variant of the active path is selected; with hasADHD: false, the Regular variant is selected
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 09-01-PLAN.md — main.js: replace both hardcoded runPath('weak-regular') calls with dynamic store-based routing
+- [ ] 09-02-PLAN.md — renderer.html: remove Auto button, set Weak as default active, add legacy 'auto' migration guard
 
 ## Progress
 
@@ -138,5 +142,5 @@ Plans:
 | 5. Serial Integration | v1.1 | 4/4 | Complete | 2026-04-17 |
 | 6. Timer Event Wiring | v1.1 | 2/2 | Complete | 2026-04-17 |
 | 7. Onboarding Flow | v1.2 | 0/3 | Not started | - |
-| 8. Intervention Engine | v1.2 | 0/TBD | Not started | - |
-| 9. Focus Wiring | v1.2 | 0/TBD | Not started | - |
+| 8. Intervention Engine | v1.2 | 0/4 | Not started | - |
+| 9. Focus Wiring | v1.2 | 0/2 | Not started | - |
