@@ -63,7 +63,7 @@
             cx="100" cy="100" r="92"
             fill="none"
             stroke="rgba(0, 0, 0, 0.15)"
-            stroke-width="3"
+            stroke-width="8"
           />
           <!-- Progress circle (animated countdown) -->
           <circle
@@ -71,7 +71,7 @@
             cx="100" cy="100" r="92"
             fill="none"
             stroke="#1a1a1a"
-            stroke-width="3"
+            stroke-width="8"
             stroke-linecap="round"
             stroke-dasharray="578.05"
             stroke-dashoffset="0"
@@ -478,14 +478,6 @@
       if (target) target.classList.add('active')
     })
 
-    // Phase 7 — ONBOARD-06: Retake Test reopens onboarding questionnaire
-    const btnRetake = document.getElementById('btn-retake')
-    if (btnRetake) {
-      btnRetake.addEventListener('click', () => {
-        window.glorb.openOnboarding()
-      })
-    }
-
     // --- User name inline edit ---
     const userNameEl = document.getElementById('user-name')
     const nameInput = document.getElementById('name-input')
@@ -524,14 +516,6 @@
       updateFocusMessage()
     })
     updateFocusMessage()
-
-    // Refresh name when onboarding completes (handles first-run and retake)
-    window.glorb.onOnboardingComplete(() => {
-      window.glorb.storeGet('userName', 'You').then(name => {
-        userNameEl.textContent = name
-        updateFocusMessage()
-      })
-    })
 
     // === Theme Toggle ===
 
@@ -585,37 +569,6 @@
     // React to connection changes while panel is open (D-18: push from main)
     window.glorb.onSerialStatus(({ connected }) => {
       if (settingsOpen) applySerialStatus(connected)
-    })
-
-    // Phase 8 — Weak path terminate: show in-window popup
-    function showInterventionPopup (message) {
-      // Create overlay div if not present
-      let overlay = document.getElementById('intervention-popup')
-      if (!overlay) {
-        overlay = document.createElement('div')
-        overlay.id = 'intervention-popup'
-        overlay.style.cssText = [
-          'position:fixed', 'inset:0', 'background:rgba(0,0,0,0.7)',
-          'display:flex', 'align-items:center', 'justify-content:center',
-          'z-index:9999', 'flex-direction:column', 'gap:16px'
-        ].join(';')
-        document.body.appendChild(overlay)
-      }
-      overlay.innerHTML = [
-        '<div style="background:#fff;border-radius:12px;padding:24px 32px;text-align:center;max-width:220px;">',
-        '<p style="margin:0 0 16px;font-family:system-ui;font-size:14px;color:#222;">' + message + '</p>',
-        '<button onclick="document.getElementById(\'intervention-popup\').remove()"',
-        ' style="background:#FF6B35;color:#fff;border:none;border-radius:8px;padding:8px 20px;font-size:13px;cursor:pointer;">',
-        'OK</button></div>'
-      ].join('')
-      overlay.style.display = 'flex'
-    }
-
-    window.glorb.onInterventionTerminate((data) => {
-      // End the timer if running
-      if (typeof stopTimer === 'function') stopTimer()
-      // Show popup overlay
-      showInterventionPopup(data.message)
     })
   </script>
 </body>

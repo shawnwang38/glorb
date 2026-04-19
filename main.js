@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Tray, nativeImage, ipcMain, globalShortcut, Notification } = require('electron')
+const { app, BrowserWindow, Tray, nativeImage, ipcMain, globalShortcut, Notification, screen } = require('electron')
 const path = require('path')
 const { execFile } = require('child_process')
 const Store = require('electron-store')
@@ -143,8 +143,136 @@ function runWeakADHD () {
     }, 5000)
   }, 10000)
 }
-function runStrongRegular () { /* Plan 03 */ }
-function runStrongADHD ()   { /* Plan 03 */ }
+function createOverlayWindow (htmlFile, durationMs) {
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize
+  if (overlayWin && !overlayWin.isDestroyed()) {
+    overlayWin.close()
+  }
+  overlayWin = new BrowserWindow({
+    width,
+    height,
+    x: 0,
+    y: 0,
+    show: true,
+    frame: false,
+    alwaysOnTop: true,
+    skipTaskbar: true,
+    transparent: true,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false
+    }
+  })
+  overlayWin.loadFile(htmlFile)
+  overlayWin.on('closed', () => { overlayWin = null })
+  if (durationMs) {
+    trackTimeout(() => {
+      if (overlayWin && !overlayWin.isDestroyed()) overlayWin.close()
+    }, durationMs)
+  }
+  return overlayWin
+}
+
+function fadeAudioOver30s () {
+  // D-03: fade system volume to 0 over 30s using osascript in 10 steps of 3s each
+  const steps = 10
+  const stepMs = 3000
+  for (let i = 1; i <= steps; i++) {
+    const targetVol = Math.max(0, 100 - i * 10)
+    trackTimeout(() => {
+      execFile('osascript', ['-e', `set volume output volume ${targetVol}`], () => {})
+    }, i * stepMs)
+  }
+}
+
+function runStrongRegular () {
+  // Step 1 — 15s: push "Stay focused!" + 1 chime
+  trackTimeout(() => {
+    new Notification({ title: 'Glorb', body: 'Stay focused!' }).show()
+    playSound(SND.chime)
+
+    let pingCount = 1
+
+    // Steps 2-3 — every 10s: 2 chimes; on 3rd ping: 3 chimes + last reminder
+    const interval = trackInterval(() => {
+      pingCount++
+      if (pingCount === 2) {
+        playSound(SND.chime)
+        trackTimeout(() => playSound(SND.chime), 400)
+      } else if (pingCount === 3) {
+        playSound(SND.chime)
+        trackTimeout(() => playSound(SND.chime), 400)
+        trackTimeout(() => playSound(SND.chime), 800)
+        new Notification({ title: 'Glorb', body: 'Last reminder — Stay focused!' }).show()
+        clearInterval(interval)
+        const idx = escalationTimers.indexOf(interval)
+        if (idx !== -1) escalationTimers.splice(idx, 1)
+
+        // Step 4 — after last reminder: 2s full-screen Glorb flash (D-05)
+        trackTimeout(() => {
+          createOverlayWindow('flash.html', 2000)
+
+          // Step 5 — after flash closes (2s): fade audio over 30s
+          trackTimeout(() => {
+            fadeAudioOver30s()
+
+            // Step 6 — vignette for 60s
+            trackTimeout(() => {
+              createOverlayWindow('vignette.html', 60000)
+
+              // Step 7 — terminate screen after vignette
+              trackTimeout(() => {
+                createOverlayWindow('terminate.html', null)  // dwell-to-dismiss
+              }, 60000)
+            }, 500)  // slight offset so flash closes before vignette opens
+          }, 2000)
+        }, 1000)
+      }
+    }, 10000)
+  }, 15000)
+}
+
+function runStrongADHD () {
+  // Step 1 — 10s: push notif + 1 note
+  trackTimeout(() => {
+    new Notification({ title: 'Glorb', body: 'Stay focused!' }).show()
+    playNotes(1)
+
+    let pingCount = 1
+
+    // Steps 2 — every 5s up to 5 pings with increasing notes
+    const interval = trackInterval(() => {
+      pingCount++
+      if (pingCount <= 5) {
+        playNotes(pingCount)
+        if (pingCount === 5) {
+          clearInterval(interval)
+          const idx = escalationTimers.indexOf(interval)
+          if (idx !== -1) escalationTimers.splice(idx, 1)
+
+          // Step 3 — 5s full-screen Glorb flash (D-06)
+          createOverlayWindow('flash.html', 5000)
+
+          // Step 4 — after flash (5s): fade audio 30s
+          trackTimeout(() => {
+            fadeAudioOver30s()
+
+            // Step 5 — vignette 60s
+            trackTimeout(() => {
+              createOverlayWindow('vignette.html', 60000)
+
+              // Step 6 — terminate screen
+              trackTimeout(() => {
+                createOverlayWindow('terminate.html', null)  // dwell-to-dismiss
+              }, 60000)
+            }, 500)
+          }, 5000)
+        }
+      }
+    }, 5000)
+  }, 10000)
+}
 
 // Serial connection state (D-10: main process only)
 let serialPort = null
@@ -368,6 +496,13 @@ ipcMain.handle('open-onboarding', () => {
     return
   }
   createOnboardingWindow()
+})
+
+ipcMain.handle('close-overlay', () => {
+  if (overlayWin && !overlayWin.isDestroyed()) {
+    overlayWin.close()
+    overlayWin = null
+  }
 })
 
 ipcMain.handle('close-onboarding', () => {
