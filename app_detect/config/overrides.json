@@ -1,0 +1,10 @@
+{
+  "alwaysAllowedApps": [
+    "Finder",
+    "System Settings",
+    "Google Chrome",
+    "Safari"
+  ],
+  "manualAllowedApps": [],
+  "manualBlockedApps": []
+}

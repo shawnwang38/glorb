@@ -5,6 +5,9 @@ const net = require('net')
 const fs = require('fs')
 const Store = require('electron-store')
 const { SerialPort } = require('serialport')
+const { predict } = require('./app_detect/src/predict')
+const { getActiveApp } = require('./app_detect/src/appDetection')
+const { normalizeAppName } = require('./app_detect/src/normalize')
 const store = new Store()
 
 // Phase 8 — macOS system sound paths (D-01: afplay only, no bundled files)
@@ -40,6 +43,14 @@ let driftCount = 0
 const escalationTimers = []  // D-11: store all setTimeout/setInterval refs here
 let overlayWin = null        // shared ref for overlay BrowserWindow (Plans 03/04)
 let detectorProc = null      // quick-260418-uzm: Python detection subprocess
+
+// quick-260418-vya: app-detect polling state.
+// allowedApps: null → LLM not yet resolved (treat everything as allowed).
+//              []   → LLM resolved to empty (low-intent task; still allowed).
+//              [...]→ whitelist of canonical app names.
+// disabled: true if Ollama failed this session; polling continues but no emissions.
+// prevActiveInAllowed: last-tick membership; null until first tick (no baseline).
+let appDetectState = null
 
 function clearAllTimers () {
   while (escalationTimers.length) {
@@ -77,6 +88,26 @@ function runPath (pathId) {
     default:
       console.warn('[intervention] unknown pathId:', pathId)
   }
+}
+
+// quick-260418-vya: shared intervention dispatch helpers.
+// Single source of truth for drift/refocus behavior. Called from:
+//   - socket 'drift'/'refocus' branches
+//   - ipcMain 'drift-detected'/'refocus-detected' handlers
+//   - app-detect polling tick (this plan)
+function dispatchDrift () {
+  driftCount++
+  const strength = store.get('strength', 'weak')
+  const hasADHD = store.get('hasADHD', false)
+  runPath(`${strength === 'strong' ? 'strong' : 'weak'}-${hasADHD ? 'adhd' : 'regular'}`)
+}
+
+function dispatchRefocus () {
+  if (driftCount > 0) {
+    new Notification({ title: 'Glorb', body: 'Focus regained.' }).show()
+  }
+  driftCount = 0
+  clearAllTimers()
 }
 
 function weakTerminate (message) {
@@ -285,6 +316,76 @@ let serialPort = null
 let isConnected = false
 let reconnectTimer = null
 
+// quick-260418-vya: app-detect lifecycle + edge-triggered polling.
+function startAppDetect (task) {
+  stopAppDetect()  // clear any prior state/interval
+
+  appDetectState = {
+    task,
+    allowedApps: null,         // resolved by background predict()
+    disabled: false,
+    prevActiveInAllowed: null, // first tick sets baseline, no emit
+    intervalId: null,
+  }
+
+  // Background LLM fetch — do NOT await. Polling runs in parallel.
+  predict(task)
+    .then((apps) => {
+      if (!appDetectState || appDetectState.task !== task) return  // stale
+      appDetectState.allowedApps = apps
+      console.log('[glorb-appdetect] allowed apps for task:', apps)
+    })
+    .catch((err) => {
+      if (!appDetectState || appDetectState.task !== task) return
+      appDetectState.disabled = true
+      console.warn('[glorb-appdetect] LLM unavailable:', err.message)
+    })
+
+  appDetectState.intervalId = setInterval(appDetectTick, 1000)
+}
+
+function appDetectTick () {
+  if (!appDetectState) return
+  if (appDetectState.disabled) return
+
+  // If LLM hasn't resolved yet, treat all apps as allowed (no emit).
+  if (appDetectState.allowedApps === null) return
+
+  let active
+  try {
+    active = normalizeAppName(getActiveApp())
+  } catch (err) {
+    console.warn('[glorb-appdetect] getActiveApp failed (skipping tick):', err.message)
+    return
+  }
+
+  const allowedSet = new Set(appDetectState.allowedApps)
+  // Empty allowed set (low-intent task) means "everything is allowed" — treat as no distraction.
+  const inAllowed = allowedSet.size === 0 ? true : allowedSet.has(active)
+
+  if (appDetectState.prevActiveInAllowed === null) {
+    // First resolved tick — establish baseline, no emit.
+    appDetectState.prevActiveInAllowed = inAllowed
+    return
+  }
+
+  if (appDetectState.prevActiveInAllowed && !inAllowed) {
+    console.log('[glorb-appdetect] drift:', active, 'not in', [...allowedSet])
+    dispatchDrift()
+  } else if (!appDetectState.prevActiveInAllowed && inAllowed) {
+    console.log('[glorb-appdetect] refocus:', active)
+    dispatchRefocus()
+  }
+  appDetectState.prevActiveInAllowed = inAllowed
+}
+
+function stopAppDetect () {
+  if (appDetectState && appDetectState.intervalId) {
+    clearInterval(appDetectState.intervalId)
+  }
+  appDetectState = null
+}
+
 function createWindow () {
   win = new BrowserWindow({
     width: 286,
@@ -491,17 +592,10 @@ function startSocketServer () {
       if (buf.includes('\n')) {
         const cmd = buf.trim()
         if (cmd === 'drift') {
-          driftCount++
-          const strength = store.get('strength', 'weak')
-          const hasADHD = store.get('hasADHD', false)
-          runPath(`${strength === 'strong' ? 'strong' : 'weak'}-${hasADHD ? 'adhd' : 'regular'}`)
+          dispatchDrift()
           socket.write('ok\n')
         } else if (cmd === 'refocus') {
-          if (driftCount > 0) {
-            new Notification({ title: 'Glorb', body: 'Focus regained.' }).show()
-          }
-          driftCount = 0
-          clearAllTimers()
+          dispatchRefocus()
           socket.write('ok\n')
         } else if (cmd === 'fatigue') {
           // quick-260418-uzm: notification-only; NO runPath, NO driftCount,
@@ -559,6 +653,7 @@ app.on('before-quit', () => {
   if (detectorProc && !detectorProc.killed) {
     try { detectorProc.kill('SIGTERM') } catch (_) {}
   }
+  stopAppDetect()
   try { fs.unlinkSync(SOCK_PATH) } catch (_) {}
 })
 
@@ -624,16 +719,19 @@ ipcMain.handle('close-onboarding', () => {
 
 // Phase 8 — INTERV-01/02: drift and refocus IPC handlers
 ipcMain.handle('drift-detected', () => {
-  driftCount++
-  const strength = store.get('strength', 'weak')
-  const hasADHD = store.get('hasADHD', false)
-  runPath(`${strength === 'strong' ? 'strong' : 'weak'}-${hasADHD ? 'adhd' : 'regular'}`)
+  dispatchDrift()
 })
 
 ipcMain.handle('refocus-detected', () => {
-  if (driftCount > 0) {
-    new Notification({ title: 'Glorb', body: 'Focus regained.' }).show()
-  }
-  driftCount = 0
-  clearAllTimers()
+  dispatchRefocus()
+})
+
+// quick-260418-vya: app-detect task lifecycle
+ipcMain.handle('set-task', (event, task) => {
+  if (typeof task !== 'string' || task.trim() === '') return
+  startAppDetect(task.trim())
+})
+
+ipcMain.handle('clear-task', () => {
+  stopAppDetect()
 })

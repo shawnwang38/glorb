@@ -1,0 +1,6 @@
+{
+  "name": "glorbus-mvp",
+  "version": "1.0.0",
+  "description": "App-based focus task classifier using Ollama on macOS",
+  "main": "src/predict.js"
+}
