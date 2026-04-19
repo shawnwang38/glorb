@@ -112,7 +112,7 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 08-01-PLAN.md — Intervention state machine core: drift/refocus IPC handlers, timer registry, runPath dispatcher, preload.js exposure
+- [x] 08-01-PLAN.md — Intervention state machine core: drift/refocus IPC handlers, timer registry, runPath dispatcher, preload.js exposure
 - [ ] 08-02-PLAN.md — Weak paths: Weak×Regular and Weak×ADHD escalation sequences with push notifications, audio, in-window terminate popup
 - [ ] 08-03-PLAN.md — Strong paths + overlay windows: Strong×Regular and Strong×ADHD, flash/vignette/terminate HTML files, audio fade
 - [ ] 08-04-PLAN.md — CLI simulator: simulate.js Unix socket client, main.js socket server, end-to-end test
