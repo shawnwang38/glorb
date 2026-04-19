@@ -571,7 +571,9 @@ ipcMain.handle('close-onboarding', () => {
 // Phase 8 — INTERV-01/02: drift and refocus IPC handlers
 ipcMain.handle('drift-detected', () => {
   driftCount++
-  runPath('weak-regular')  // Phase 9 will replace with dynamic path selection
+  const strength = store.get('strength', 'weak')
+  const hasADHD = store.get('hasADHD', false)
+  runPath(`${strength === 'strong' ? 'strong' : 'weak'}-${hasADHD ? 'adhd' : 'regular'}`)
 })
 
 ipcMain.handle('refocus-detected', () => {
