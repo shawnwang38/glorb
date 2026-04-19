@@ -411,7 +411,7 @@ function createWindow () {
 
 function createTray () {
   const trayIcon = nativeImage
-    .createFromPath(path.join(__dirname, 'glorb_icon.png'))
+    .createFromPath(path.join(__dirname, 'assets', 'glorb_icon.png'))
     .resize({ width: 18, height: 18 })
   trayIcon.setTemplateImage(true)
 

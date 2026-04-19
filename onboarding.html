@@ -14,7 +14,7 @@
     <!-- Screen 1: Greeting -->
     <div class="screen active" id="screen-greeting">
       <div class="greeting-content">
-        <img class="glorb-avatar" src="glorb_light.png" id="onb-glorb-img" alt="Glorb mascot">
+        <img class="glorb-avatar" src="assets/glorb_light.png" id="onb-glorb-img" alt="Glorb mascot">
         <h1 class="text-display text-center greeting-heading">Hi, I'm Glorbus Pallidus. You can call me Glorb.</h1>
         <button class="btn-primary greeting-cta" id="btn-get-started">Let's get started</button>
       </div>
@@ -161,7 +161,7 @@
     const sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches
     if (t === 'dark' || (t == null && sysDark)) {
       document.body.classList.add('dark')
-      onbGlorbImg.src = 'glorb_dark.png'
+      onbGlorbImg.src = 'assets/glorb_dark.png'
     }
   })
 

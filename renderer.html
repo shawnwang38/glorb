@@ -97,7 +97,7 @@
         <div id="glorb-container">
           <img
             id="glorb-img"
-            src="glorb_light.png"
+            src="assets/glorb_light.png"
             alt="Glorb mascot"
             onerror="this.style.display='none'; document.getElementById('glorb-placeholder').style.display='flex';"
           >
@@ -606,12 +606,12 @@
       isDark = dark
       if (dark) {
         document.body.classList.add('dark')
-        glorbImg.src = 'glorb_dark.png'
+        glorbImg.src = 'assets/glorb_dark.png'
         iconSun.style.display = 'block'
         iconMoon.style.display = 'none'
       } else {
         document.body.classList.remove('dark')
-        glorbImg.src = 'glorb_light.png'
+        glorbImg.src = 'assets/glorb_light.png'
         iconSun.style.display = 'none'
         iconMoon.style.display = 'block'
       }
