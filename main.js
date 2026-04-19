@@ -316,6 +316,9 @@ function createTray () {
   tray = new Tray(trayIcon)
 
   tray.on('click', () => {
+    // Lock menu bar during onboarding / retake-test
+    if (onboardingWin && !onboardingWin.isDestroyed()) return
+
     if (win.isVisible()) {
       win.hide()
     } else {
