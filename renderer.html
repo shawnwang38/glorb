@@ -109,8 +109,18 @@
       <!-- Time display -->
       <div id="time-display"><span class="time-nums">25</span>m <span class="time-nums">00</span>s</div>
 
-      <!-- Start / Pause / Resume button -->
-      <button id="btn-start">Focus</button>
+      <!-- Task subtitle — visible only while timer is running -->
+      <div id="task-subtitle" aria-live="polite"></div>
+
+      <!-- Idle: task input row; Running: Unfocus button. Toggled by JS. -->
+      <form id="task-form" autocomplete="off">
+        <input id="task-input" type="text" maxlength="120"
+               placeholder="What are you working on?" spellcheck="false" autocomplete="off">
+        <button id="btn-task-submit" type="submit" aria-label="Start focus session" disabled>&#9654;</button>
+      </form>
+
+      <!-- Running-state button (hidden when idle) -->
+      <button id="btn-unfocus" type="button" style="display:none">Unfocus</button>
     </div>
 
     <!-- Settings panel (Phase 3 — slides in from right) -->
@@ -180,7 +190,6 @@
 
     const ringProgress = document.getElementById('ring-progress')
     const timeDisplay = document.getElementById('time-display')
-    const btnStart = document.getElementById('btn-start')
 
     let remaining = getTotalSeconds()
     let timerState = 'idle'  // 'idle' | 'running' | 'paused'
@@ -269,33 +278,80 @@
       ringProgress.style.transition = 'none'
       updateRing(getTotalSeconds())
       timeDisplay.innerHTML = formatTime(getTotalSeconds())
-      btnStart.textContent = 'Start'
       // Re-enable transition after a frame so next run animates smoothly
       requestAnimationFrame(() => {
         ringProgress.style.transition = 'stroke-dashoffset 1s linear'
       })
       syncHandleVisibility()
+      // quick-260418-vya: restore input row + stop app-detect polling
+      showIdleUI()
+      window.glorb.clearTask()
     }
 
-    btnStart.addEventListener('click', () => {
-      if (timerState === 'idle') {
-        ringProgress.style.transition = 'stroke-dashoffset 1s linear'
-        timerState = 'running'
-        clearSerialRevert()
-        sendDefault()
-        sessionStartTime = Date.now()
-        btnStart.textContent = 'Unfocus'
-        intervalId = setInterval(tick, 1000)
-        syncHandleVisibility()
-      } else if (timerState === 'running') {
-        // D-06: cancel → DEFAULT immediately, clear pending revert
-        clearSerialRevert()
-        latchEndTime = 0
-        sendDefault()
-        const elapsed = Math.round((Date.now() - sessionStartTime) / 1000)
-        addFocusTime(elapsed)
-        resetTimer()
-      }
+    // === quick-260418-vya: task input + submit ===
+    const taskForm       = document.getElementById('task-form')
+    const taskInput      = document.getElementById('task-input')
+    const btnTaskSubmit  = document.getElementById('btn-task-submit')
+    const taskSubtitle   = document.getElementById('task-subtitle')
+    const btnUnfocus     = document.getElementById('btn-unfocus')
+
+    // Empty-input rule: button disabled, Enter is a no-op.
+    taskInput.addEventListener('input', () => {
+      btnTaskSubmit.disabled = taskInput.value.trim() === ''
+    })
+
+    function showIdleUI () {
+      taskForm.style.display = ''
+      btnUnfocus.style.display = 'none'
+      taskSubtitle.textContent = ''
+      taskSubtitle.style.display = 'none'
+      taskInput.value = ''
+      btnTaskSubmit.disabled = true
+    }
+
+    function showRunningUI (taskText) {
+      taskForm.style.display = 'none'
+      btnUnfocus.style.display = ''
+      taskSubtitle.textContent = taskText
+      taskSubtitle.style.display = ''
+    }
+
+    taskForm.addEventListener('submit', (e) => {
+      e.preventDefault()
+      const task = taskInput.value.trim()
+      if (task === '') return          // Enter with empty input = no-op
+      if (timerState !== 'idle') return // already running; ignore double-submit
+
+      // Debounce: disable the button for 300ms to prevent double-fire.
+      btnTaskSubmit.disabled = true
+      setTimeout(() => {
+        if (taskInput.value.trim() !== '' && timerState === 'idle') btnTaskSubmit.disabled = false
+      }, 300)
+
+      // === Start timer (same sequence as the old btn-start idle branch) ===
+      ringProgress.style.transition = 'stroke-dashoffset 1s linear'
+      timerState = 'running'
+      clearSerialRevert()
+      sendDefault()
+      sessionStartTime = Date.now()
+      intervalId = setInterval(tick, 1000)
+      syncHandleVisibility()
+
+      // === Register task with main process (fire-and-forget) ===
+      window.glorb.setTask(task)
+
+      showRunningUI(task)
+    })
+
+    btnUnfocus.addEventListener('click', () => {
+      // === Same as old btn-start running branch ===
+      // D-06: cancel → DEFAULT immediately, clear pending revert
+      clearSerialRevert()
+      latchEndTime = 0
+      sendDefault()
+      const elapsed = Math.round((Date.now() - sessionStartTime) / 1000)
+      addFocusTime(elapsed)
+      resetTimer()  // resetTimer() now also handles showIdleUI() + clearTask()
     })
 
     // === Phase 3: Settings Panel Toggle ===

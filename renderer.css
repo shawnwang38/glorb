@@ -226,26 +226,85 @@ html, body {
   color: #1a1a1a;
 }
 
-/* Start / Pause / Resume button — primary action, 160px centered */
-#btn-start {
+/* === quick-260418-vya: task input row === */
+#task-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 200px;
+  margin-top: 28px;
+}
+
+#task-input {
+  flex: 1;
+  padding: 8px 10px;
+  font-family: inherit;
+  font-size: 13px;
+  color: #1a1a1a;
+  background: #f0f0f0;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 150ms ease;
+}
+#task-input:focus {
+  border-color: #FF6B35;
+}
+#task-input::placeholder {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+#btn-task-submit {
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  padding: 0;
+  font-size: 13px;
+  line-height: 1;
+  color: #fff;
+  background: #FF6B35;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 150ms ease, opacity 150ms ease;
+}
+#btn-task-submit:hover:not(:disabled) {
+  background: #e85a24;
+}
+#btn-task-submit:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+#btn-unfocus {
   width: 160px;
   padding: 12px 24px;
   margin-top: 32px;
-  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: inherit;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 500;
   color: #f0f0f0;
   background: #1a1a1a;
   border: 1px solid #1a1a1a;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background 150ms ease, border-color 150ms ease;
   line-height: 1.5;
 }
-
-#btn-start:hover {
+#btn-unfocus:hover {
   background: #333333;
   border-color: #333333;
+}
+
+#task-subtitle {
+  margin-top: 8px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.45);
+  text-align: center;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: none;
 }
 
 /* Hamburger button — top-right, mirrors × close button placement */
@@ -514,15 +573,26 @@ body.dark #glorb-vignette {
   background: radial-gradient(circle, transparent 40%, #171719 75%);
 }
 
-body.dark #btn-start {
+/* quick-260418-vya: dark-mode pair for task input + unfocus + subtitle */
+body.dark #task-input {
+  background: #171719;
+  color: #c0c0c8;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+body.dark #task-input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+body.dark #btn-unfocus {
   background: #c0c0c8;
   color: #171719;
   border-color: #c0c0c8;
 }
-
-body.dark #btn-start:hover {
+body.dark #btn-unfocus:hover {
   background: #d4d4d4;
   border-color: #d4d4d4;
+}
+body.dark #task-subtitle {
+  color: rgba(255, 255, 255, 0.45);
 }
 
 body.dark #btn-quit {
