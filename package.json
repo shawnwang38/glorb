@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "postinstall": "electron-rebuild"
+    "setup:python": "node scripts/setup-python.cjs",
+    "postinstall": "node scripts/setup-python.cjs && electron-rebuild"
   },
   "devDependencies": {
     "@electron/rebuild": "^4.0.3",

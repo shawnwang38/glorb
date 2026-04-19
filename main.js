@@ -448,11 +448,19 @@ async function initSerial() {
 // intentional exit (no USB camera, see camera_detect/run.py) should NOT
 // spin forever.
 function startDetector () {
-  const venvPy = path.join(__dirname, 'camera_detect', 'venv', 'bin', 'python3')
-  const pythonBin = fs.existsSync(venvPy) ? venvPy : 'python3'
-  const cwd = path.join(__dirname, 'camera_detect')
+  // Prefer the venv set up by scripts/setup-python.cjs (npm postinstall).
+  // Fall back to legacy path and then system python3 so dev setups keep working.
+  const cdDir = path.join(__dirname, 'camera_detect')
+  const candidates = [
+    path.join(cdDir, '.venv', 'bin', 'python'),
+    path.join(cdDir, 'venv', 'bin', 'python3'),
+  ]
+  const pythonBin = candidates.find(p => fs.existsSync(p)) || 'python3'
+  if (pythonBin === 'python3') {
+    console.warn('[glorb-detect] no venv found at camera_detect/.venv — run `npm run setup:python` to enable detection. Falling back to system python3.')
+  }
 
-  detectorProc = spawn(pythonBin, ['run.py'], { cwd })
+  detectorProc = spawn(pythonBin, ['run.py'], { cwd: cdDir })
 
   detectorProc.on('error', (err) => {
     console.warn('[glorb-detect] spawn failed:', err.message)
