@@ -1,6 +1,6 @@
 const { app, BrowserWindow, Tray, nativeImage, ipcMain, globalShortcut, Notification, screen } = require('electron')
 const path = require('path')
-const { execFile } = require('child_process')
+const { execFile, spawn } = require('child_process')
 const net = require('net')
 const fs = require('fs')
 const Store = require('electron-store')
@@ -39,6 +39,7 @@ const SOCK_PATH = '/tmp/glorb-ipc.sock'
 let driftCount = 0
 const escalationTimers = []  // D-11: store all setTimeout/setInterval refs here
 let overlayWin = null        // shared ref for overlay BrowserWindow (Plans 03/04)
+let detectorProc = null      // quick-260418-uzm: Python detection subprocess
 
 function clearAllTimers () {
   while (escalationTimers.length) {
@@ -441,6 +442,36 @@ async function initSerial() {
   startReconnectLoop()  // D-14/D-15: always poll for connect and disconnect
 }
 
+// quick-260418-uzm: spawn the Python detector as a managed child process.
+// Electron is responsible for starting this AFTER startSocketServer() is
+// listening and for killing it on before-quit. No auto-respawn — an
+// intentional exit (no USB camera, see camera_detect/run.py) should NOT
+// spin forever.
+function startDetector () {
+  const venvPy = path.join(__dirname, 'camera_detect', 'venv', 'bin', 'python3')
+  const pythonBin = fs.existsSync(venvPy) ? venvPy : 'python3'
+  const cwd = path.join(__dirname, 'camera_detect')
+
+  detectorProc = spawn(pythonBin, ['run.py'], { cwd })
+
+  detectorProc.on('error', (err) => {
+    console.warn('[glorb-detect] spawn failed:', err.message)
+    detectorProc = null
+  })
+
+  detectorProc.stdout.on('data', (d) => {
+    process.stdout.write(`[glorb-detect] ${d}`)
+  })
+  detectorProc.stderr.on('data', (d) => {
+    process.stderr.write(`[glorb-detect] ${d}`)
+  })
+
+  detectorProc.on('exit', (code, signal) => {
+    console.log(`[glorb-detect] python exited: code=${code} signal=${signal}`)
+    detectorProc = null
+  })
+}
+
 function startSocketServer () {
   // Clean up stale socket file from previous run
   try { fs.unlinkSync(SOCK_PATH) } catch (_) {}
@@ -463,6 +494,11 @@ function startSocketServer () {
           }
           driftCount = 0
           clearAllTimers()
+          socket.write('ok\n')
+        } else if (cmd === 'fatigue') {
+          // quick-260418-uzm: notification-only; NO runPath, NO driftCount,
+          // NO escalation timers. One-shot per NORMAL->BREAK_NEEDED transition.
+          new Notification({ title: 'Glorb', body: 'Hey, need a break?' }).show()
           socket.write('ok\n')
         } else {
           socket.write(`unknown command: ${cmd}\n`)
@@ -492,6 +528,9 @@ app.whenReady().then(async () => {
   createTray()
   initSerial()
   startSocketServer()
+  // quick-260418-uzm: socket server must be listening before Python tries
+  // to connect, so spawn the detector AFTER startSocketServer() returns.
+  startDetector()
 
   globalShortcut.register('Command+Q', () => {
     app.quit()
@@ -509,6 +548,9 @@ app.on('window-all-closed', (e) => {
 })
 
 app.on('before-quit', () => {
+  if (detectorProc && !detectorProc.killed) {
+    try { detectorProc.kill('SIGTERM') } catch (_) {}
+  }
   try { fs.unlinkSync(SOCK_PATH) } catch (_) {}
 })
 
