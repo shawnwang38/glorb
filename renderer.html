@@ -485,6 +485,8 @@
         window.glorb.storeSet('strength', val)
       })
     })
+    document.getElementById('btn-retake').addEventListener('click', () => window.glorb.openOnboarding())
+
     // Restore saved strength on load
     window.glorb.storeGet('strength', 'weak').then(savedStrength => {
       if (savedStrength === 'auto') {
@@ -591,7 +593,7 @@
 
     // Intervention terminate: stop timer and show in-window popup (Phase 8, INTERV-03/04)
     window.glorb.onInterventionTerminate((data) => {
-      if (typeof stopTimer === 'function') stopTimer()
+      if (typeof resetTimer === 'function') resetTimer()
       showInterventionPopup(data.message)
     })
   </script>
