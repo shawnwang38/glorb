@@ -486,7 +486,11 @@
       })
     })
     // Restore saved strength on load
-    window.glorb.storeGet('strength', 'auto').then(savedStrength => {
+    window.glorb.storeGet('strength', 'weak').then(savedStrength => {
+      if (savedStrength === 'auto') {
+        savedStrength = 'weak'
+        window.glorb.storeSet('strength', 'weak')
+      }
       strengthBtns.forEach(b => b.classList.remove('active'))
       const target = document.querySelector(`.strength-btn[data-strength="${savedStrength}"]`)
       if (target) target.classList.add('active')
