@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { margin: 0; padding: 0; }
+    body {
+      width: 100vw; height: 100vh;
+      pointer-events: none;
+      -webkit-app-region: no-drag;
+    }
+    .vignette {
+      position: fixed; inset: 0;
+      animation: pulse 3s ease-in-out infinite;
+    }
+    /* Light mode: darken edges */
+    @media (prefers-color-scheme: light) {
+      .vignette {
+        background: radial-gradient(ellipse at center,
+          transparent 40%, rgba(0,0,0,0.7) 100%);
+      }
+    }
+    /* Dark mode: brighten edges */
+    @media (prefers-color-scheme: dark) {
+      .vignette {
+        background: radial-gradient(ellipse at center,
+          transparent 40%, rgba(255,255,255,0.6) 100%);
+      }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="vignette"></div>
+  <!-- Dismissed via main.js clearAllTimers() closing the window, or refocusDetected() -->
+</body>
+</html>

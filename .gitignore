@@ -10,7 +10,6 @@ dist/
 *.pdf
 *.md
 !README.md
-!ASRS-SCORING.md
 
 # Design assets / scratch files
 selection-menu.png

@@ -14,11 +14,8 @@ U8G2_SSD1306_128X64_NONAME_2_HW_I2C u8g2_hw(U8G2_R1, U8X8_PIN_NONE);
 U8G2_SSD1306_128X64_NONAME_2_SW_I2C u8g2_sw(U8G2_R3, /*clock=*/17, /*data=*/16, U8X8_PIN_NONE);
 
 void displaySetup() {
-    bool hw_ok = u8g2_hw.begin();
-    bool sw_ok = u8g2_sw.begin();
-    Serial.begin(115200);
-    Serial.print("HW I2C (A4/A5): "); Serial.println(hw_ok ? "OK" : "FAIL");
-    Serial.print("SW I2C (A2/A3): "); Serial.println(sw_ok ? "OK" : "FAIL");
+    u8g2_hw.begin();
+    u8g2_sw.begin();
 }
 
 void showDisplay(DisplayState state) {

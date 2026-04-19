@@ -14,5 +14,6 @@ contextBridge.exposeInMainWorld('glorb', {
   onOnboardingComplete: (cb) => ipcRenderer.on('onboarding-complete', () => cb()),
   driftDetected: () => ipcRenderer.invoke('drift-detected'),
   refocusDetected: () => ipcRenderer.invoke('refocus-detected'),
-  onInterventionTerminate: (cb) => ipcRenderer.on('intervention-terminate', (_e, data) => cb(data))
+  onInterventionTerminate: (cb) => ipcRenderer.on('intervention-terminate', (_e, data) => cb(data)),
+  closeOverlay: () => ipcRenderer.invoke('close-overlay')
 })
