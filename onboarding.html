@@ -57,20 +57,20 @@
       <p class="text-label text-muted text-center question-counter" id="question-counter" role="progressbar" aria-valuemin="0" aria-valuemax="18" aria-valuenow="0">Question 1 of 18</p>
       <div class="question-content">
         <p class="text-heading text-center question-text" id="question-text"></p>
-        <div
-          class="dot-selector question-selector"
-          id="dot-selector"
-          role="radiogroup"
-          aria-label=""
-        >
-          <div class="response-dot" role="radio" aria-checked="false" tabindex="0" data-value="0"></div>
-          <div class="response-dot" role="radio" aria-checked="false" tabindex="0" data-value="1"></div>
-          <div class="response-dot" role="radio" aria-checked="false" tabindex="0" data-value="2"></div>
-          <div class="response-dot" role="radio" aria-checked="false" tabindex="0" data-value="3"></div>
-          <div class="response-dot" role="radio" aria-checked="false" tabindex="0" data-value="4"></div>
-        </div>
-        <div class="dot-selector-labels">
+        <div class="dot-selector-row">
           <span class="dot-label-left text-label text-muted">Never</span>
+          <div
+            class="dot-selector question-selector"
+            id="dot-selector"
+            role="radiogroup"
+            aria-label=""
+          >
+            <div class="response-dot" role="radio" aria-checked="false" tabindex="0" data-value="0"></div>
+            <div class="response-dot" role="radio" aria-checked="false" tabindex="0" data-value="1"></div>
+            <div class="response-dot" role="radio" aria-checked="false" tabindex="0" data-value="2"></div>
+            <div class="response-dot" role="radio" aria-checked="false" tabindex="0" data-value="3"></div>
+            <div class="response-dot" role="radio" aria-checked="false" tabindex="0" data-value="4"></div>
+          </div>
           <span class="dot-label-right text-label text-muted">Very Often</span>
         </div>
       </div>
@@ -157,8 +157,9 @@
   }
 
   // ── Theme ────────────────────────────────────────────────────────────────────
-  window.glorb.storeGet('theme', 'light').then(t => {
-    if (t === 'dark') {
+  window.glorb.storeGet('theme', null).then(t => {
+    const sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    if (t === 'dark' || (t == null && sysDark)) {
       document.body.classList.add('dark')
       onbGlorbImg.src = 'glorb_dark.png'
     }

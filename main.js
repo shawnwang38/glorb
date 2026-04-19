@@ -334,12 +334,13 @@ function createTray () {
 }
 
 function createOnboardingWindow () {
+  const { width: sw, height: sh } = screen.getPrimaryDisplay().workAreaSize
   onboardingWin = new BrowserWindow({
-    width: 800,
-    height: 620,
+    width: Math.round(sw * 0.92),
+    height: Math.round(sh * 0.92),
     show: true,
     frame: true,
-    resizable: false,
+    resizable: true,
     center: true,
     alwaysOnTop: false,
     skipTaskbar: false,
