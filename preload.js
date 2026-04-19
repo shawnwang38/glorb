@@ -11,5 +11,7 @@ contextBridge.exposeInMainWorld('glorb', {
   sendSerial: (cmd) => ipcRenderer.invoke('send-serial', cmd),
   closeOnboarding: () => ipcRenderer.invoke('close-onboarding'),
   openOnboarding: () => ipcRenderer.invoke('open-onboarding'),
-  onOnboardingComplete: (cb) => ipcRenderer.on('onboarding-complete', () => cb())
+  onOnboardingComplete: (cb) => ipcRenderer.on('onboarding-complete', () => cb()),
+  driftDetected: () => ipcRenderer.invoke('drift-detected'),
+  refocusDetected: () => ipcRenderer.invoke('refocus-detected')
 })
