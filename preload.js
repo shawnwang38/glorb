@@ -13,5 +13,6 @@ contextBridge.exposeInMainWorld('glorb', {
   openOnboarding: () => ipcRenderer.invoke('open-onboarding'),
   onOnboardingComplete: (cb) => ipcRenderer.on('onboarding-complete', () => cb()),
   driftDetected: () => ipcRenderer.invoke('drift-detected'),
-  refocusDetected: () => ipcRenderer.invoke('refocus-detected')
+  refocusDetected: () => ipcRenderer.invoke('refocus-detected'),
+  onInterventionTerminate: (cb) => ipcRenderer.on('intervention-terminate', (_e, data) => cb(data))
 })
