@@ -128,8 +128,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 09-01-PLAN.md — main.js: replace both hardcoded runPath('weak-regular') calls with dynamic store-based routing
-- [ ] 09-02-PLAN.md — renderer.html: remove Auto button, set Weak as default active, add legacy 'auto' migration guard
+- [x] 09-01-PLAN.md — main.js: replace both hardcoded runPath('weak-regular') calls with dynamic store-based routing
+- [x] 09-02-PLAN.md — renderer.html: remove Auto button, set Weak as default active, add legacy 'auto' migration guard
 
 ## Progress
 
