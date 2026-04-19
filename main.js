@@ -449,7 +449,9 @@ function startSocketServer () {
         const cmd = buf.trim()
         if (cmd === 'drift') {
           driftCount++
-          runPath('weak-regular')  // Phase 9 will replace with dynamic routing
+          const strength = store.get('strength', 'weak')
+          const hasADHD = store.get('hasADHD', false)
+          runPath(`${strength === 'strong' ? 'strong' : 'weak'}-${hasADHD ? 'adhd' : 'regular'}`)
           socket.write('ok\n')
         } else if (cmd === 'refocus') {
           if (driftCount > 0) {
