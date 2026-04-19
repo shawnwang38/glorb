@@ -8,6 +8,54 @@ let tray = null
 let win = null
 let onboardingWin = null
 
+// Phase 8 — Intervention state machine (D-09: all state in main process)
+let driftCount = 0
+const escalationTimers = []  // D-11: store all setTimeout/setInterval refs here
+let overlayWin = null        // shared ref for overlay BrowserWindow (Plans 03/04)
+
+function clearAllTimers () {
+  while (escalationTimers.length) {
+    const ref = escalationTimers.pop()
+    if (ref && ref._isInterval) clearInterval(ref)
+    else clearTimeout(ref)
+  }
+  if (overlayWin && !overlayWin.isDestroyed()) {
+    overlayWin.close()
+    overlayWin = null
+  }
+}
+
+function trackTimeout (fn, ms) {
+  const id = setTimeout(fn, ms)
+  escalationTimers.push(id)
+  return id
+}
+function trackInterval (fn, ms) {
+  const id = setInterval(fn, ms)
+  id._isInterval = true
+  escalationTimers.push(id)
+  return id
+}
+
+// Phase 8 — Path dispatcher (D-10: called from IPC handlers and CLI socket)
+// pathId: 'weak-regular' | 'weak-adhd' | 'strong-regular' | 'strong-adhd'
+// Implementations filled in by Plans 02 and 03.
+function runPath (pathId) {
+  switch (pathId) {
+    case 'weak-regular':   return runWeakRegular()
+    case 'weak-adhd':      return runWeakADHD()
+    case 'strong-regular': return runStrongRegular()
+    case 'strong-adhd':    return runStrongADHD()
+    default:
+      console.warn('[intervention] unknown pathId:', pathId)
+  }
+}
+
+function runWeakRegular ()  { /* Plan 02 */ }
+function runWeakADHD ()     { /* Plan 02 */ }
+function runStrongRegular () { /* Plan 03 */ }
+function runStrongADHD ()   { /* Plan 03 */ }
+
 // Serial connection state (D-10: main process only)
 let serialPort = null
 let isConnected = false
@@ -240,4 +288,18 @@ ipcMain.handle('close-onboarding', () => {
   if (win && !win.isDestroyed()) {
     win.webContents.send('onboarding-complete')
   }
+})
+
+// Phase 8 — INTERV-01/02: drift and refocus IPC handlers
+ipcMain.handle('drift-detected', () => {
+  driftCount++
+  runPath('weak-regular')  // Phase 9 will replace with dynamic path selection
+})
+
+ipcMain.handle('refocus-detected', () => {
+  if (driftCount > 0) {
+    new Notification({ title: 'Glorb', body: 'Focus regained.' }).show()
+  }
+  driftCount = 0
+  clearAllTimers()
 })
