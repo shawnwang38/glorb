@@ -1,3 +1,5 @@
 opencv-python>=4.8
-mediapipe>=0.10
+# Pinned to <0.10.15: later versions dropped `mp.solutions.face_mesh`
+# in favor of the mediapipe.tasks API. detector.py uses the legacy API.
+mediapipe>=0.10,<0.10.15
 numpy>=1.24
